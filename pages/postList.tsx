@@ -1,30 +1,41 @@
 import Head from "next/head";
 import Link from "next/link";
+import { getSortedPostsData } from "../lib/posts";
 
-export default function Home() {
+export default function Home({ allPostsData }) {
   return (
     <div className="container">
       <Head>
-        <title>블로그</title>
+        <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <h1 className="title">
-          환영
+          게시판
         </h1>
-        <Link href='postList'>
-          <a>게시판</a>
+        <Link href='postEdit'>
+          <button>글 작성</button>
         </Link>
-
-        <div>검색창</div>
-
-        <Link href='signIn'>
-          <button>로그인</button>
-        </Link>
-        <Link href='signUp'>
-          <button>회원가입</button>
-        </Link>
+        
+          <ol>
+            {allPostsData.map(({ id, date, title }) => (
+              <li key={id}>  
+                <Link href={`posts/${id}`}>
+                    <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </ol>
+          
+        <section>
+          <h2>get data test</h2>
+          <ul>
+            {allPostsData.map(({ id, date, title }) => (
+              <div>{id} {date} {title}</div>
+            ))}
+          </ul>
+        </section>
       </main>
 
       <footer>
@@ -185,4 +196,13 @@ export default function Home() {
       `}</style>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      allPostsData,
+    },
+  };
 }
