@@ -22,12 +22,6 @@ export default function Home() {
         <Link href='signIn'>
           <button>로그인</button>
         </Link>
-        <Link href='signUp'>
-          <button>회원가입</button>
-        </Link>
-        <Link href='postEdit'>
-          <button>글작성</button>
-        </Link>
       </main>
 
       <footer>
