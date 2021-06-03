@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/jquery": "^3.5.5",
     "eslint": "^7.27.0",
     "gray-matter": "^4.0.3",
     "next": "^10.2.3",
