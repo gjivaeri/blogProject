@@ -2,7 +2,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { getSortedPostsData } from "../lib/posts";
 
-export default function Home({ allPostsData }) {
+export default function Home(props) {
+  const {posts} = props;
+  console.log(posts);
   return (
     <div className="container">
       <Head>
@@ -18,23 +20,21 @@ export default function Home({ allPostsData }) {
           <button>글 작성</button>
         </Link>
         
-          <ol>
-            {allPostsData.map(({ id, date, title }) => (
-              <li key={id}>  
-                <Link href={`posts/${id}`}>
-                    <a>{title}</a>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          
           
         <section>
           <h2>get data test</h2>
-          <ul>
-            {allPostsData.map(({ id, date, title }) => (
-              <div>{id} {date} {title}</div>
-            ))}
-          </ul>
+          {
+          posts.map(
+            (item) => <>
+              <h2>{item.Title}</h2>
+              <p>{item.PostTime}</p>
+              <p>{item.Author}</p>
+              <p>{item.Category}</p>
+              <br/>
+            </>  
+          )
+          }
         </section>
       </main>
 
@@ -199,10 +199,10 @@ export default function Home({ allPostsData }) {
 }
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
+  const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
+  const posts = await res.json();
+
   return {
-    props: {
-      allPostsData,
-    },
+    props: {posts}
   };
 }
