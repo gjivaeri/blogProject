@@ -187,8 +187,8 @@ var naver_id_login = function (client_id,redirect_uri)
  */
 	this.init_naver_id_login = function ()
 	{
-		var naver_id_login = document.getElementById('naver_id_login');
-		if (naver_id_login==undefined)
+		var login = document.getElementById('naver_id_login');
+		if (login==undefined)
 		{
 			alert("id 가 naver_id_login 인 div tag 가 존재해야 합니다.");
 			return false;
@@ -201,7 +201,7 @@ var naver_id_login = function (client_id,redirect_uri)
 		{
 			color="w";
 		}
-		naver_id_login.innerHTML="";
+		login.innerHTML="";
 		naver_id_login_contents="";
 		naver_id_login_url = this.getNaverIdLoginLink();
 		if (this.state==undefined || this.state=="")
@@ -225,7 +225,7 @@ var naver_id_login = function (client_id,redirect_uri)
 		{
 			naver_id_login_contents="<a href='"+naver_id_login_url+"' "+naver_id_popup_option+" id='naver_id_login_anchor'><img src='http://static.nid.naver.com/oauth/big_"+color+".PNG' border='0' title='네이버 아이디로 로그인' width='"+(this.button_height*185/40)+"px' height='"+this.button_height+"px'></a> ";
 		}
-		naver_id_login.innerHTML=naver_id_login_contents;
+		login.innerHTML=naver_id_login_contents;
 		if (this.is_callback)
 		{
 			this.init_naver_id_login_callback();
@@ -413,7 +413,7 @@ var naver_id_login = function (client_id,redirect_uri)
 	//우선 callback 인지 확인
 	this.parseCallBack_check();
 
-	this.get_naver_userprofile = function(callback_func1) {
+	this.get_naver_userprofile = async function(callback_func1) {
 		$.ajax({
 		url: "https://openapi.naver.com/v1/nid/getUserProfile.json?response_type=json",
 		type: "GET",
@@ -431,11 +431,27 @@ var naver_id_login = function (client_id,redirect_uri)
 			inner_profileParams.profile_image = result.response.profile_image;
 			inner_profileParams.name          = result.response.name;
 			eval(callback_func1);
+			window.opener.location.href="http://localhost:3000";
+			self.close();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 			//에러 처리는 적절히
 			alert(xhr.status);
-			alert(thrownError);
+			if (xhr.status === 0) {
+                alert('Not connect.\n Verify Network.');
+            } else if (xhr.status == 404) {
+                alert('Requested page not found. [404]');
+            } else if (xhr.status == 500) {
+                alert('Internal Server Error [500].');
+            } else if (thrownError === 'parsererror') {
+                alert('Requested JSON parse failed.');
+            } else if (thrownError === 'timeout') {
+                alert('Time out error.');
+            } else if (thrownError === 'abort') {
+                alert('Ajax request aborted.');
+            } else {
+                alert('Uncaught Error.\n' + xhr.responseText +"\n" + thrownError);
+            }
 		}
 		});
 	}

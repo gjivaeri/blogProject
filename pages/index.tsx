@@ -10,16 +10,16 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1 className="title">
+        <h1 className="/title">
           환영
         </h1>
-        <Link href='postList'>
+        <Link href='/postList'>
           <a>게시판</a>
         </Link>
 
         <div>검색창</div>
 
-        <Link href='signIn'>
+        <Link href='/signIn'>
           <button>로그인</button>
         </Link>
       </main>
