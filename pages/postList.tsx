@@ -1,8 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
+import { Grid } from "semantic-ui-react";
+import styles from "../src/postList.module.css";
 import { getSortedPostsData } from "../lib/posts";
 
-export default function Home({ allPostsData }) {
+export default function Home(props) {
+  const {posts} = props;
   return (
     <div className="container">
       <Head>
@@ -14,30 +17,37 @@ export default function Home({ allPostsData }) {
         <h1 className="title">
           게시판
         </h1>
-        <Link href='postEdit'>
+        <Link href="postEdit">
           <button>글 작성</button>
         </Link>
-        
-          <ol>
-            {allPostsData.map(({ id, date, title }) => (
-              <li key={id}>  
-                <Link href={`posts/${id}`}>
-                    <a>{title}</a>
-                </Link>
-              </li>
-            ))}
-          </ol>
-          
         <section>
-          <h2>get data test</h2>
-          <ul>
-            {allPostsData.map(({ id, date, title }) => (
-              <div>{id} {date} {title}</div>
-            ))}
-          </ul>
+        <Grid columns={3}>
+        <Grid.Row>
+          {
+            posts.map(
+              (item) => (
+                <Grid.Column key={item.PostID}>
+              <Link href={`/view/${item.PostID}`}>
+              <a>
+                <div className={styles.wrap}>
+                    <h2 className={styles.tit_item}>{item.Title}</h2>
+                  <span className={styles.txt_info}>
+                    <p>게시일: {item.PostTime}</p>
+                    <p>작성자: {item.Author}</p>
+                    <p>카테고리: {item.Category}</p>
+                  </span>
+                  <br/>
+                </div>
+              </a>
+              </Link>
+              </Grid.Column>
+            )
+          )
+          }
+        </Grid.Row>
+        </Grid>
         </section>
       </main>
-
       <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -199,10 +209,10 @@ export default function Home({ allPostsData }) {
 }
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
+  const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
+  const posts = await res.json();
+
   return {
-    props: {
-      allPostsData,
-    },
+    props: {posts}
   };
 }
