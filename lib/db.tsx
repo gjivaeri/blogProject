@@ -18,3 +18,5 @@ export async function sqlQuery(queryString, values=[]) {
     throw Error(e.message);
   }
 }
+//db에 개체 만들고 쿼리를 사용하여 쿼리 메서드 호출. 스트링과 values값을 결과에 넣음
+//ex)sql_query(`Select * from ~ ORDER BY id DESC LIMIT 10`)처럼 사용

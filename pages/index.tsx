@@ -16,7 +16,7 @@ export default function Home() {
         <Link href='postList'>
           <a>게시판</a>
         </Link>
-
+        
         <div>검색창</div>
 
         <Link href='signIn'>
