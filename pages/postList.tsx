@@ -36,7 +36,7 @@ export default function Home({posts}) {
                     <h2 className={styles.tit_item}>{item.title}</h2>
                   <span className={styles.txt_info}>
                     <p>게시일: {new Date(item.created_at.seconds * 1000).toISOString()}</p>
-                    <p>작성자: {item.author.uid}</p>
+                    <p>작성자: {item.author.displayName}</p>
                     <p>카테고리: {item.category}</p>
                   </span>
                   <br/>
