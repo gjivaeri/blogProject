@@ -1,10 +1,42 @@
-import { sqlQuery, db } from '../../lib/db';
+import firebase from '../../lib/firebase';
+import config from "../../config/firebaseConfig";
+import db from "../../lib/db"
+import store from '../../lib/store';
+
+const short = require('short-uuid');
+
 
 const handler = async (req, res) => {
-  let results = await db.transaction()
-  .query(`INSERT INTO pages VALUES(${req.query.postId}, '${req.query.title}', '${req.query.content}', '${req.query.date}', '${req.query.author}', '${req.query.category}')`)
-  .rollback(e => { /* do something with the error */ }) // optional
-  .commit() // execute the queries
+  const now = new Date();
+  const uuid = short.generate();//uuidv4();
+  const post = {
+    //postid, content, posttime, author
+    content: req.query.content,
+    title: req.query.title,
+    category: req.query.category,
+    postID: uuid,
+    author: {
+      uid: '111',//store.user.uid,
+      displayName: '123',//store.user.displayName,
+      email: '12'//store.user.email,
+    },
+    created_at: now,
+    updated_at: now
+  };
+
+
+
+  firebase.firestore()
+    .collection('posts')
+    .doc(uuid)
+    .set(post)
+    .then(res => {
+      console.log(res);
+    })
+    .catch(error => {
+      alert("error: " + error.message);
+      console.log(error);
+    });
 }
 
 export default handler;
