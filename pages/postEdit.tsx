@@ -17,10 +17,10 @@ export default function postEdit() {
         
         axios.post('/api/postEdit', null, {
             params: {
-                postId: Math.floor(Date.now() / 1000), 
+                //postId: Math.floor(Date.now() / 1000), 
                 title: title, 
                 content: content, 
-                date: date, 
+                //date: date, 
                 author: '1', 
                 category: category,
             }

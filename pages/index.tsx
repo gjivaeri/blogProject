@@ -1,7 +1,25 @@
 import Head from "next/head";
 import Link from "next/link";
+import firebase from "../lib/firebase";
+import store from "../lib/store";
 
 export default function Home() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  let login = () => {
+    firebase.auth().signInWithPopup(provider)
+    .then(res => {
+      store.user = {
+        displayName: res.user.displayName,
+        email: res.user.email,
+        uid: res.user.uid,
+      }
+    })
+    .catch(error => {
+      alert('login failed ' + error.message);
+      console.log(error);
+    }); 
+  }
+  
   return (
     <div className="container">
       <Head>
@@ -22,17 +40,13 @@ export default function Home() {
         <Link href='/signIn'>
           <button>로그인</button>
         </Link>
+        
+        {store.user === null && <button onClick={login}>firebase로그인</button  >}
+        {store.user !== null && <div>{store.user.displayName}</div>}
       </main>
 
       <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
+        footer
       </footer>
 
       <style jsx>{`
