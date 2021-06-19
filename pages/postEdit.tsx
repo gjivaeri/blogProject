@@ -90,7 +90,7 @@ export default function postEdit() {
                 <textarea ref={contentReference} id='content'></textarea>
             </div>
             <Link href='postList'>
-                <button onClick={submit} type='button'>작성</button>
+                <button onClick={submit} type='button'>저장</button>
             </Link>
             <Link href='postList'>
                 <button type='button'>취소</button>
