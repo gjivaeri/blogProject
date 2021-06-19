@@ -1,8 +1,17 @@
 const axios = require('axios');
 import Link from 'next/link';
-import React, { useRef } from 'react'
+import dynamic from 'next/dynamic'
+import React, { useEffect, useRef, useState } from 'react'
 
+import { EditorState } from 'draft-js';
+//import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { convertToHTML } from 'draft-convert';
 
+  const Editor = dynamic(
+        () => import('react-draft-wysiwyg').then(mod => mod.Editor),
+        { ssr: false }
+      );
 
 export default function postEdit() {
     const categoryReference = useRef();
@@ -25,10 +34,36 @@ export default function postEdit() {
                 category: category,
             }
         })
-        .then((response) => {
+        .then(response => {
             //console.log(response);
         })
+        .catch(error => {
+            console.log(error);
+        });
     }
+    
+    useEffect(() => {
+        //setEditorState(true);
+        
+      });
+
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+      );
+      const  [convertedContent, setConvertedContent] = useState(null);
+      
+    const handleEditorChange = async (state) => {
+        setEditorState(state);
+        convertContentToHTML();
+    };
+
+    const convertContentToHTML = async () => {
+        let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+        setConvertedContent(currentContentAsHTML);
+    };
+    console.log(convertedContent);
+   
+    
 
     return (
         <>

@@ -26,7 +26,7 @@ export default function Home({posts}) {
         <Grid columns={3}>
         <Grid.Row>
           {
-            posts.map(
+            posts && posts.map(
               (item) => (
                 
                 <Grid.Column key={item.postID}>
