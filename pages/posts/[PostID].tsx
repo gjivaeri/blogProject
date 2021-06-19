@@ -4,15 +4,17 @@ import { GetStaticPaths } from "next";
 import Link from "next/link";
 import { parseCookies } from "../helpers/";
 const axios = require("axios");
+import Cookies from "js-cookie";
 
 export default function Posts({ posts, data }) {
   const [modifyClicked, setModify] = useState(false);
   const categoryReference = useRef();
   const titleReference = useRef();
   const contentReference = useRef();
+  const user = Cookies.get("user");
 
   const router = useRouter();
-  //console.log('posts', posts)
+
   const getIndex = () => {
     for (let i = 0; i <= posts.length; i++) {
       if (router.query.PostID == posts[i].postID) {
@@ -48,6 +50,7 @@ export default function Posts({ posts, data }) {
         params: {
           title: title,
           content: content,
+          user: user,
           //date: date,
           //author: posts[i].author,
           postID: posts[i].postID,
@@ -74,7 +77,7 @@ export default function Posts({ posts, data }) {
           <p>
             게시일: {new Date(posts[i].created_at.seconds * 1000).toISOString()}
           </p>
-          <p>작성자: {posts[i].author.uid}</p>
+          <p>작성자: {posts[i].author.displayName}</p>
           <p>카테고리: {posts[i].category}</p>
           <br />
           <div className="Content">
@@ -82,10 +85,18 @@ export default function Posts({ posts, data }) {
           </div>
         </section>
 
-        {data.user ? <button onClick={modify}>수정</button> : <span></span>}
+        {JSON.parse(user).uid == posts[i].author.uid ? (
+          <button onClick={modify}>수정</button>
+        ) : (
+          <span></span>
+        )}
 
         <Link href="/">
-          {data.user ? <button onClick={remove}>삭제</button> : <span></span>}
+          {JSON.parse(user).uid == posts[i].author.uid ? (
+            <button onClick={remove}>삭제</button>
+          ) : (
+            <span></span>
+          )}
         </Link>
       </div>
     );

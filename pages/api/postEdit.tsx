@@ -6,6 +6,8 @@ const short = require("short-uuid");
 const handler = async (req, res) => {
   const now = new Date();
   const uuid = short.generate(); //uuidv4();
+  const user = JSON.parse(req.query.user);
+
   const post = {
     //postid, content, posttime, author
     content: req.query.content,
@@ -13,9 +15,9 @@ const handler = async (req, res) => {
     category: req.query.category,
     postID: uuid,
     author: {
-      uid: "111", //store.user.uid,
-      displayName: "123", //store.user.displayName,
-      email: "12", //store.user.email,
+      uid: user.uid, //store.user.uid,
+      displayName: user.displayName, //store.user.displayName,
+      email: user.email, //store.user.email,
     },
     created_at: now,
     updated_at: now,

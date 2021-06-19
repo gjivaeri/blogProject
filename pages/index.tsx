@@ -23,7 +23,7 @@ export default function Home({ data }) {
       .auth()
       .signInWithPopup(provider)
       .then((res) => {
-        Cookies.set("user", res.user.uid);
+        Cookies.set("user", JSON.stringify(res.user));
         setLogin(true);
         // store.user = {
         //   displayName: res.user.displayName,
