@@ -5,6 +5,17 @@ import { parseCookies } from "../helpers/";
 import Cookies from "js-cookie";
 
 const axios = require("axios");
+import * as Showdown from "showdown";
+import ReactMde from "react-mde";
+
+import "react-mde/lib/styles/css/react-mde-all.css";
+
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+});
 
 export default function Posts({ posts, data }) {
   const [modifyClicked, setModify] = useState(false);
@@ -40,10 +51,14 @@ export default function Posts({ posts, data }) {
       });
   };
 
+  const [value, setValue] = React.useState(posts[i].content);
+  const [selectedTab, setSelectedTab] =
+    React.useState<"write" | "preview">("write");
+
   const submit = (event) => {
     const category = (categoryReference.current as HTMLInputElement).value; //(document.getElementById('category') as HTMLInputElement).value;
     const title = (titleReference.current as HTMLInputElement).value;
-    const content = (contentReference.current as HTMLInputElement).value;
+    const content = value; //(contentReference.current as HTMLInputElement).value;
 
     axios
       .post("/api/postUpdate", null, {
@@ -133,11 +148,15 @@ export default function Posts({ posts, data }) {
             ></input>
           </div>
           <div className="content">
-            <textarea
-              ref={contentReference}
-              defaultValue={posts[i].content}
-              id="content"
-            ></textarea>
+            <ReactMde
+              value={value}
+              onChange={setValue}
+              selectedTab={selectedTab}
+              onTabChange={setSelectedTab}
+              generateMarkdownPreview={(markdown) =>
+                Promise.resolve(converter.makeHtml(markdown))
+              }
+            />
           </div>
           <Link href="/postList">
             <button onClick={submit} type="button">

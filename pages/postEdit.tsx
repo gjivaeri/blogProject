@@ -3,25 +3,29 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import React, { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
-// import { EditorState } from "draft-js";
-//import { Editor } from 'react-draft-wysiwyg';
-// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-// import { convertToHTML } from "draft-convert";
+import * as Showdown from "showdown";
+import ReactMde from "react-mde";
 
-// const Editor = dynamic(
-//   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
-//   { ssr: false }
-// );
+import "react-mde/lib/styles/css/react-mde-all.css";
+
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+});
 
 export default function postEdit() {
   const categoryReference = useRef();
   const titleReference = useRef();
-  const contentReference = useRef();
+  const [value, setValue] = React.useState("**Hello world!!!**");
+  const [selectedTab, setSelectedTab] =
+    React.useState<"write" | "preview">("write");
 
   const submit = (event) => {
     const category = (categoryReference.current as HTMLInputElement).value;
     const title = (titleReference.current as HTMLInputElement).value;
-    const content = (contentReference.current as HTMLInputElement).value;
+    const content = value; //(contentReference.current as HTMLInputElement).value;
     const user = Cookies.get("user");
     axios
       .post("/api/postEdit", null, {
@@ -43,22 +47,6 @@ export default function postEdit() {
   //   useEffect(() => {
   //     //setEditorState(true);
   //   });
-
-  //   const [editorState, setEditorState] = useState(() =>
-  //     EditorState.createEmpty()
-  //   );
-  //   const [convertedContent, setConvertedContent] = useState(null);
-
-  //   const handleEditorChange = async (state) => {
-  //     setEditorState(state);
-  //     convertContentToHTML();
-  //   };
-
-  //   const convertContentToHTML = async () => {
-  //     let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
-  //     setConvertedContent(currentContentAsHTML);
-  //   };
-  //   console.log(convertedContent);
 
   return (
     <>
@@ -87,7 +75,15 @@ export default function postEdit() {
           ></input>
         </div>
         <div className="content">
-          <textarea ref={contentReference} id="content"></textarea>
+          <ReactMde
+            value={value}
+            onChange={setValue}
+            selectedTab={selectedTab}
+            onTabChange={setSelectedTab}
+            generateMarkdownPreview={(markdown) =>
+              Promise.resolve(converter.makeHtml(markdown))
+            }
+          />
         </div>
         <Link href="postList">
           <button onClick={submit} type="button">
