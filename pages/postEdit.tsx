@@ -1,8 +1,6 @@
 const axios = require('axios');
 import Link from 'next/link';
-import React, { useRef } from 'react'
-
-
+import React, { useRef } from 'react';
 
 export default function postEdit() {
     const categoryReference = useRef();
@@ -21,7 +19,7 @@ export default function postEdit() {
                 title: title, 
                 content: content, 
                 date: date, 
-                author: '1', 
+                author: '1',
                 category: category,
             }
         })

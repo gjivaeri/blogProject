@@ -6,6 +6,7 @@ import { getSortedPostsData } from "../lib/posts";
 
 export default function Home(props) {
   const {posts} = props;
+  console.log(posts);
   return (
     <div className="container">
       <Head>
@@ -24,7 +25,7 @@ export default function Home(props) {
         <Grid columns={3}>
         <Grid.Row>
           {
-            posts.map(
+            posts.items.map(
               (item) => (
                 <Grid.Column key={item.PostID}>
               <Link href={`/view/${item.PostID}`}>
