@@ -2,12 +2,12 @@ import Head from "next/head";
 import Link from "next/link";
 import { Grid } from "semantic-ui-react";
 import styles from "../src/postList.module.css";
-import firebase from '../lib/firebase';
+import firebase from "../lib/firebase";
 import config from "../config/firebaseConfig";
 
-export default function Home({posts}) {
+export default function Home({ posts }) {
   console.log(posts);
-  
+
   return (
     <div className="container">
       <Head>
@@ -16,44 +16,41 @@ export default function Home({posts}) {
       </Head>
 
       <main>
-        <h1 className="title">
-          게시판
-        </h1>
+        <h1 className="title">게시판</h1>
         <Link href="postEdit">
           <button>글 작성</button>
         </Link>
         <section>
-        <Grid columns={3}>
-        <Grid.Row>
-          {
-            posts && posts.map(
-              (item) => (
-                
-                <Grid.Column key={item.postID}>
-              <Link href={`/posts/${item.postID}`}>
-              <a>
-                <div className={styles.wrap}>
-                    <h2 className={styles.tit_item}>{item.title}</h2>
-                  <span className={styles.txt_info}>
-                    <p>게시일: {new Date(item.created_at.seconds * 1000).toISOString()}</p>
-                    <p>작성자: {item.author.displayName}</p>
-                    <p>카테고리: {item.category}</p>
-                  </span>
-                  <br/>
-                </div>
-              </a>
-              </Link>
-              </Grid.Column>
-            )
-          )
-          }
-        </Grid.Row>
-        </Grid>
+          <Grid columns={3}>
+            <Grid.Row>
+              {posts &&
+                posts.map((item) => (
+                  <Grid.Column key={item.postID}>
+                    <Link href={`/posts/${item.postID}`}>
+                      <a>
+                        <div className={styles.wrap}>
+                          <h2 className={styles.tit_item}>{item.title}</h2>
+                          <span className={styles.txt_info}>
+                            <p>
+                              게시일:{" "}
+                              {new Date(
+                                item.created_at.seconds * 1000
+                              ).toISOString()}
+                            </p>
+                            <p>작성자: {item.author.displayName}</p>
+                            <p>카테고리: {item.category}</p>
+                          </span>
+                          <br />
+                        </div>
+                      </a>
+                    </Link>
+                  </Grid.Column>
+                ))}
+            </Grid.Row>
+          </Grid>
         </section>
       </main>
-      <footer>
-        footer
-      </footer>
+      <footer>footer</footer>
 
       <style jsx>{`
         .container {
@@ -207,17 +204,17 @@ export default function Home({posts}) {
 // export async function getStaticProps() {
 //   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
 //   const posts = await res.json();
- 
+
 //   return {
 //     props: {posts},
 //   };
-// } 
+// }
 
 export async function getServerSideProps() {
-  const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
+  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
   const posts = await res.json();
- 
+
   return {
-    props: {posts},
+    props: { posts },
   };
-} 
+}
