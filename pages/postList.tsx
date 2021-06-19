@@ -204,7 +204,16 @@ export default function Home({posts}) {
   );
 }
 
-export async function getStaticProps() {
+// export async function getStaticProps() {
+//   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
+//   const posts = await res.json();
+ 
+//   return {
+//     props: {posts},
+//   };
+// } 
+
+export async function getServerSideProps() {
   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
   const posts = await res.json();
  
