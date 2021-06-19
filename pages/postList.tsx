@@ -6,6 +6,7 @@ import { getSortedPostsData } from "../lib/posts";
 
 export default function Home(props) {
   const {posts} = props;
+  console.log(typeof(posts))
   return (
     <div className="container">
       <Head>
