@@ -22,12 +22,12 @@ export default function Posts({posts}) {
         {posts[i].title}
       </h1>
     <section className="ContentBox">
-      <p>게시일: {posts[i].PostTime}</p>
-      <p>작성자: {posts[i].Author}</p>
-      <p>카테고리: {posts[i].Category}</p>
+      <p>게시일: {new Date(posts[i].created_at.seconds * 1000).toISOString()}</p>
+      <p>작성자: {posts[i].author.uid}</p>
+      <p>카테고리: {posts[i].category}</p>
       <br/>
         <div className="Content">
-          <p>{posts[i].Content}</p>
+          <p>{posts[i].content}</p>
         </div>
     </section>
     <Link href="/postEdit">
