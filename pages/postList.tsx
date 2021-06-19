@@ -2,11 +2,12 @@ import Head from "next/head";
 import Link from "next/link";
 import { Grid } from "semantic-ui-react";
 import styles from "../src/postList.module.css";
-import { getSortedPostsData } from "../lib/posts";
+import firebase from '../lib/firebase';
+import config from "../config/firebaseConfig";
 
-export default function Home(props) {
-  const {posts} = props;
+export default function Home({posts}) {
   console.log(posts);
+  
   return (
     <div className="container">
       <Head>
@@ -25,17 +26,18 @@ export default function Home(props) {
         <Grid columns={3}>
         <Grid.Row>
           {
-            posts.items.map(
+            posts && posts.map(
               (item) => (
-                <Grid.Column key={item.PostID}>
-              <Link href={`/view/${item.PostID}`}>
+                
+                <Grid.Column key={item.postID}>
+              <Link href={`/posts/${item.postID}`}>
               <a>
                 <div className={styles.wrap}>
-                    <h2 className={styles.tit_item}>{item.Title}</h2>
+                    <h2 className={styles.tit_item}>{item.title}</h2>
                   <span className={styles.txt_info}>
-                    <p>게시일: {item.PostTime}</p>
-                    <p>작성자: {item.Author}</p>
-                    <p>카테고리: {item.Category}</p>
+                    <p>게시일: {new Date(item.created_at.seconds * 1000).toISOString()}</p>
+                    <p>작성자: {item.author.displayName}</p>
+                    <p>카테고리: {item.category}</p>
                   </span>
                   <br/>
                 </div>
@@ -50,14 +52,7 @@ export default function Home(props) {
         </section>
       </main>
       <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
+        footer
       </footer>
 
       <style jsx>{`
@@ -212,8 +207,8 @@ export default function Home(props) {
 export async function getStaticProps() {
   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
   const posts = await res.json();
-
+ 
   return {
-    props: {posts}
+    props: {posts},
   };
-}
+} 

@@ -1,7 +1,50 @@
 import Head from "next/head";
 import Link from "next/link";
+import firebase from "../lib/firebase";
 
-export default function Home() {
+import {parseCookies} from "./helpers/"
+import {useState, useEffect} from "react";
+import Cookies from 'js-cookie'
+
+export default function Home({data}) {
+ //console.log(data);
+
+  
+  const [loggedIn, setLogin] = useState(false);
+  useEffect(() => {
+    const loggedInUser = Cookies.get('user');
+    if (loggedInUser) {
+      setLogin(true);
+    }
+  }, []);
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+  let login = () => {
+    firebase.auth().signInWithPopup(provider)
+    .then(res => {
+      Cookies.set('user',JSON.stringify(res.user.uid));
+      setLogin(true);
+      // store.user = {
+      //   displayName: res.user.displayName,
+      //   email: res.user.email,
+      //   uid: res.user.uid,
+      // }
+    })
+    .catch(error => {
+      alert('login failed ' + error.message);
+      console.log(error);
+    }); 
+  }
+
+  let logout = () => {
+    firebase.auth().signOut().then(() => {
+    Cookies.remove('user');
+    setLogin(false);
+    }).catch(error => {
+      console.log(error);
+    })
+  };
+  
   return (
     <div className="container">
       <Head>
@@ -22,17 +65,15 @@ export default function Home() {
         <Link href='/signIn'>
           <button>로그인</button>
         </Link>
+        
+        {!loggedIn && <button onClick={login}>firebase로그인</button  >}
+        {loggedIn && <div>안녕하세요</div>}
+        {loggedIn && <button onClick={logout}>firebase로그아웃</button  >}
+
       </main>
 
       <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
+        footer
       </footer>
 
       <style jsx>{`
@@ -182,4 +223,12 @@ export default function Home() {
       `}</style>
     </div>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  const data = parseCookies(ctx.req);
+  
+  return {
+    props: {data},
+  };
 }
