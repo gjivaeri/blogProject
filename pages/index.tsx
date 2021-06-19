@@ -25,11 +25,6 @@ export default function Home({ data }) {
       .then((res) => {
         Cookies.set("user", JSON.stringify(res.user));
         setLogin(true);
-        // store.user = {
-        //   displayName: res.user.displayName,
-        //   email: res.user.email,
-        //   uid: res.user.uid,
-        // }
       })
       .catch((error) => {
         alert("login failed " + error.message);
@@ -61,6 +56,10 @@ export default function Home({ data }) {
         <h1 className="/title">환영</h1>
         <Link href="/postList">
           <a>게시판</a>
+        </Link>
+
+        <Link href="/myPosts">
+          <a>내 글</a>
         </Link>
 
         <div>검색창</div>

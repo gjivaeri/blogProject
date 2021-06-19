@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { GetStaticPaths } from "next";
 import Link from "next/link";
 import { parseCookies } from "../helpers/";
-const axios = require("axios");
 import Cookies from "js-cookie";
+
+const axios = require("axios");
 
 export default function Posts({ posts, data }) {
   const [modifyClicked, setModify] = useState(false);
@@ -75,7 +75,7 @@ export default function Posts({ posts, data }) {
         <h1 className="title">{posts[i].title}</h1>
         <section className="ContentBox">
           <p>
-            게시일: {new Date(posts[i].created_at.seconds * 1000).toISOString()}
+            게시일: {new Date(posts[i].created_at.seconds * 1000).toString()}
           </p>
           <p>작성자: {posts[i].author.displayName}</p>
           <p>카테고리: {posts[i].category}</p>
