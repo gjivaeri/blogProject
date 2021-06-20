@@ -15,9 +15,7 @@ export default function Home({ posts }) {
 
       <main>
         <h1 className="title">게시판</h1>
-        <Link href="postEdit">
-          <button>글 작성</button>
-        </Link>
+
         <section>
           <Grid columns={3}>
             <Grid.Row>
@@ -33,7 +31,7 @@ export default function Home({ posts }) {
                               게시일:{" "}
                               {new Date(
                                 item.created_at.seconds * 1000
-                              ).toString()}
+                              ).toLocaleString()}
                             </p>
                             <p>작성자: {item.author.displayName}</p>
                             <p>카테고리: {item.category}</p>
@@ -48,7 +46,6 @@ export default function Home({ posts }) {
           </Grid>
         </section>
       </main>
-      <footer>footer</footer>
 
       <style jsx>{`
         .container {

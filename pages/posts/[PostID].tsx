@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { parseCookies } from "../helpers/";
 import Cookies from "js-cookie";
-
+import { Input, Dropdown, Button } from "semantic-ui-react";
 const axios = require("axios");
+import ReactMarkdown from "react-markdown";
+
 import * as Showdown from "showdown";
 import ReactMde from "react-mde";
 
@@ -56,33 +58,58 @@ export default function Posts({ posts, data }) {
     React.useState<"write" | "preview">("write");
 
   const submit = (event) => {
-    const category = (categoryReference.current as HTMLInputElement).value; //(document.getElementById('category') as HTMLInputElement).value;
-    const title = (titleReference.current as HTMLInputElement).value;
+    const category =
+      (categoryReference.current as HTMLInputElement).value == undefined
+        ? posts[i].category
+        : (categoryReference.current as HTMLInputElement).value;
+    const title =
+      (titleReference.current as HTMLInputElement).value == undefined
+        ? posts[i].title
+        : (titleReference.current as HTMLInputElement).value;
     const content = value; //(contentReference.current as HTMLInputElement).value;
 
-    axios
-      .post("/api/postUpdate", null, {
-        params: {
-          title: title,
-          content: content,
-          user: user,
-          //date: date,
-          //author: posts[i].author,
-          postID: posts[i].postID,
-          category: category,
-        },
-      })
-      .then((response) => {
-        //console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (title == 0) {
+      alert("최소 한글자 이상의 제목을 입력해야 합니다");
+    } else if (category == 0) {
+      alert("카테고리를 선택해야 합니다");
+    } else {
+      axios
+        .post("/api/postUpdate", null, {
+          params: {
+            title: title,
+            content: content,
+            user: user,
+            //date: date,
+            //author: posts[i].author,
+            postID: posts[i].postID,
+            category: category,
+          },
+        })
+        .then((response) => {
+          //console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      router.push("/postList");
+    }
   };
 
   const modify = () => {
     setModify(true);
   };
+
+  const handleDropDownSelect = (event, data) => {
+    (categoryReference.current as HTMLInputElement).value = data.value;
+  };
+  const handleTitleInput = (event, data) => {
+    (titleReference.current as HTMLInputElement).value = data.value;
+  };
+  const options = [
+    { key: 1, text: "일기", value: "diary" },
+    { key: 2, text: "리뷰", value: "review" },
+    { key: 3, text: "TIL", value: "til" },
+  ];
 
   if (modifyClicked == false) {
     return (
@@ -90,25 +117,31 @@ export default function Posts({ posts, data }) {
         <h1 className="title">{posts[i].title}</h1>
         <section className="ContentBox">
           <p>
-            게시일: {new Date(posts[i].created_at.seconds * 1000).toString()}
+            게시일:{" "}
+            {new Date(posts[i].created_at.seconds * 1000).toLocaleString()}
           </p>
           <p>작성자: {posts[i].author.displayName}</p>
           <p>카테고리: {posts[i].category}</p>
           <br />
+          <ReactMarkdown children={posts[i].content}></ReactMarkdown>
           <div className="Content">
             <p>{posts[i].content}</p>
           </div>
         </section>
 
         {JSON.parse(user).uid == posts[i].author.uid ? (
-          <button onClick={modify}>수정</button>
+          <Button primary onClick={modify}>
+            수정
+          </Button>
         ) : (
           <span></span>
         )}
 
-        <Link href="/">
+        <Link href="/postList">
           {JSON.parse(user).uid == posts[i].author.uid ? (
-            <button onClick={remove}>삭제</button>
+            <Button secondary onClick={remove}>
+              삭제
+            </Button>
           ) : (
             <span></span>
           )}
@@ -128,24 +161,27 @@ export default function Posts({ posts, data }) {
         </nav>
         <form>
           <div className="category">
-            <select
+            <Dropdown
+              clearable
+              options={options}
+              selection
+              onChange={handleDropDownSelect}
               ref={categoryReference}
               defaultValue={posts[i].category}
-              id="category"
-            >
-              <option value="diary">일기</option>
-              <option value="review">리뷰</option>
-              <option value="til">TIL</option>
-            </select>
+            />
           </div>
           <div className="title">
-            <input
+            <Input
               ref={titleReference}
-              defaultValue={posts[i].title}
               type="text"
               id="title"
-              placeholder="제목"
-            ></input>
+              minLength={1}
+              maxLength={13}
+              onChange={handleTitleInput}
+              defaultValue={posts[i].title}
+              transparent
+              placeholder="제목을 입력하세요"
+            />
           </div>
           <div className="content">
             <ReactMde
@@ -158,11 +194,11 @@ export default function Posts({ posts, data }) {
               }
             />
           </div>
-          <Link href="/postList">
-            <button onClick={submit} type="button">
-              저장
-            </button>
-          </Link>
+
+          <button onClick={submit} type="button">
+            저장
+          </button>
+
           <Link href="/postList">
             <button type="button">취소</button>
           </Link>

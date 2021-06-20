@@ -13,10 +13,8 @@ export default function Home({ posts }) {
       </Head>
 
       <main>
-        <h1 className="title">게시판</h1>
-        <Link href="postEdit">
-          <button>글 작성</button>
-        </Link>
+        <h1 className="title">내 글</h1>
+
         <section>
           <Grid columns={3}>
             <Grid.Row>
@@ -47,7 +45,6 @@ export default function Home({ posts }) {
           </Grid>
         </section>
       </main>
-      <footer>footer</footer>
 
       <style jsx>{`
         .container {

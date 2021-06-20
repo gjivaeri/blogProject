@@ -1,6 +1,8 @@
 const axios = require("axios");
 import Link from "next/link";
-import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+
+import { Input, Dropdown, Button } from "semantic-ui-react";
 import React, { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import * as Showdown from "showdown";
@@ -16,63 +18,88 @@ const converter = new Showdown.Converter({
 });
 
 export default function postEdit() {
+  const router = useRouter();
   const categoryReference = useRef();
+
   const titleReference = useRef();
   const [value, setValue] = React.useState("**Hello world!!!**");
   const [selectedTab, setSelectedTab] =
     React.useState<"write" | "preview">("write");
 
   const submit = (event) => {
-    const category = (categoryReference.current as HTMLInputElement).value;
-    const title = (titleReference.current as HTMLInputElement).value;
+    const category =
+      (categoryReference.current as HTMLInputElement).value == undefined
+        ? 0
+        : (categoryReference.current as HTMLInputElement).value;
+    const title =
+      (titleReference.current as HTMLInputElement).value == undefined
+        ? 0
+        : (titleReference.current as HTMLInputElement).value;
+
     const content = value; //(contentReference.current as HTMLInputElement).value;
     const user = Cookies.get("user");
-    axios
-      .post("/api/postEdit", null, {
-        params: {
-          title: title,
-          content: content,
-          category: category,
-          user: user,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    if (title == 0) {
+      alert("최소 한글자 이상의 제목을 입력해야 합니다");
+    } else if (category == 0) {
+      alert("카테고리를 선택해야 합니다");
+    } else {
+      axios
+        .post("/api/postEdit", null, {
+          params: {
+            title: title,
+            content: content,
+            category: category,
+            user: user,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      router.push("/postList");
+    }
   };
 
-  //   useEffect(() => {
-  //     //setEditorState(true);
-  //   });
+  const handleDropDownSelect = (event, data) => {
+    (categoryReference.current as HTMLInputElement).value = data.value;
+  };
+  const handleTitleInput = (event, data) => {
+    (titleReference.current as HTMLInputElement).value = data.value;
+  };
+  const options = [
+    { key: 1, text: "일기", value: "diary" },
+    { key: 2, text: "리뷰", value: "review" },
+    { key: 3, text: "TIL", value: "til" },
+  ];
 
   return (
     <>
       <h1>글 작성/수정</h1>
-      <nav>
-        <ul className="nav-container">
-          <li className="nav-item">홈</li>
-          <li className="nav-item">내 글</li>
-          <li className="nav-item">로그아웃</li>
-        </ul>
-      </nav>
+
       <form>
         <div className="category">
-          <select ref={categoryReference} id="category">
-            <option value="diary">일기</option>
-            <option value="review">리뷰</option>
-            <option value="til">TIL</option>
-          </select>
+          <Dropdown
+            clearable
+            options={options}
+            selection
+            onChange={handleDropDownSelect}
+            ref={categoryReference}
+          />
         </div>
         <div className="title">
-          <input
+          <Input
             ref={titleReference}
             type="text"
             id="title"
-            placeholder="제목"
-          ></input>
+            minLength={1}
+            maxLength={13}
+            onChange={handleTitleInput}
+            transparent
+            placeholder="제목을 입력하세요"
+          />
         </div>
         <div className="content">
           <ReactMde
@@ -85,13 +112,15 @@ export default function postEdit() {
             }
           />
         </div>
+
+        <Button primary onClick={submit} type="button">
+          저장
+        </Button>
+
         <Link href="postList">
-          <button onClick={submit} type="button">
-            저장
-          </button>
-        </Link>
-        <Link href="postList">
-          <button type="button">취소</button>
+          <Button secondary type="button">
+            취소
+          </Button>
         </Link>
       </form>
     </>
