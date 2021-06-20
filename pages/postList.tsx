@@ -48,7 +48,6 @@ export default function Home({ posts }) {
           </Grid>
         </section>
       </main>
-      <footer>footer</footer>
 
       <style jsx>{`
         .container {

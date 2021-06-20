@@ -58,9 +58,7 @@ export default function Home({ data }) {
           <a>게시판</a>
         </Link>
 
-        <Link href="/myPosts">
-          <a>내 글</a>
-        </Link>
+        <Link href="/myPosts">{loggedIn ? <a> 내 글</a> : <span></span>}</Link>
 
         <div>검색창</div>
 
@@ -72,8 +70,6 @@ export default function Home({ data }) {
         {loggedIn && <div>안녕하세요</div>}
         {loggedIn && <button onClick={logout}>firebase로그아웃</button>}
       </main>
-
-      <footer>footer</footer>
 
       <style jsx>{`
         .container {
