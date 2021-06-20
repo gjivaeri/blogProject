@@ -1,42 +1,39 @@
-import firebase from '../../lib/firebase';
+import firebase from "../../lib/firebase";
 import config from "../../config/firebaseConfig";
-import db from "../../lib/db"
-import store from '../../lib/store';
 
-const short = require('short-uuid');
-
+const short = require("short-uuid");
 
 const handler = async (req, res) => {
   const now = new Date();
-  const uuid = short.generate();//uuidv4();
+  const uuid = short.generate();
+  const user = JSON.parse(req.query.user);
+
   const post = {
-    //postid, content, posttime, author
     content: req.query.content,
     title: req.query.title,
     category: req.query.category,
     postID: uuid,
     author: {
-      uid: '111',//store.user.uid,
-      displayName: '123',//store.user.displayName,
-      email: '12'//store.user.email,
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
     },
     created_at: now,
-    updated_at: now
+    updated_at: now,
   };
 
-
-
-  firebase.firestore()
-    .collection('posts')
+  firebase
+    .firestore()
+    .collection("posts")
     .doc(uuid)
     .set(post)
-    .then(res => {
+    .then((res) => {
       console.log(res);
     })
-    .catch(error => {
+    .catch((error) => {
       alert("error: " + error.message);
       console.log(error);
     });
-}
+};
 
 export default handler;
