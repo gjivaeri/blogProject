@@ -18,6 +18,8 @@ BANNER_BIG_TYPE = 3;
 BUTTON_COLOR_WHITE = "white";
 BUTTON_COLOR_GREEN = "green";
 
+var inner_profileParams = {};
+
 var naver_id_login = function (client_id,redirect_uri)
 {
 	this.button_color = BUTTON_COLOR_GREEN;
@@ -431,8 +433,7 @@ var naver_id_login = function (client_id,redirect_uri)
 			inner_profileParams.profile_image = result.response.profile_image;
 			inner_profileParams.name          = result.response.name;
 			eval(callback_func1);
-			window.opener.location.href="http://localhost:3000";
-			self.close();
+			return result.response.id;
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 			//에러 처리는 적절히
@@ -482,4 +483,3 @@ var naver_id_login = function (client_id,redirect_uri)
 		return this.oauthParams.access_token;
 	}
 }
-var inner_profileParams = {};
