@@ -5,7 +5,9 @@ import { parseCookies } from "../helpers/";
 import Cookies from "js-cookie";
 import { Input, Dropdown, Button } from "semantic-ui-react";
 const axios = require("axios");
-import ReactMarkdown from "react-markdown";
+
+var markdown = require("markdown").markdown;
+import parse from "html-react-parser";
 
 import * as Showdown from "showdown";
 import ReactMde from "react-mde";
@@ -123,10 +125,9 @@ export default function Posts({ posts, data }) {
           <p>작성자: {posts[i].author.displayName}</p>
           <p>카테고리: {posts[i].category}</p>
           <br />
-          <ReactMarkdown children={posts[i].content}></ReactMarkdown>
-          <div className="Content">
-            <p>{posts[i].content}</p>
-          </div>
+          <p>{parse(markdown.toHTML(posts[i].content))}</p>
+
+          <div className="Content"></div>
         </section>
 
         {JSON.parse(user).uid == posts[i].author.uid ? (
