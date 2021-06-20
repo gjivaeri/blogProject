@@ -4,7 +4,8 @@ import firebase from "../lib/firebase";
 
 import {parseCookies} from "./helpers/"
 import {useState, useEffect} from "react";
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import {LoginContext} from '../public/context';
 
 export default function Home({data}) {
  //console.log(data);
@@ -46,13 +47,18 @@ export default function Home({data}) {
   };
   
   return (
+    
     <div className="container">
       <Head>
         <title>블로그</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main>
+      <LoginContext.Consumer>
+        {({id, setID}) => (
+          //로그인 상태에 따라 뭔가 하기
+        )}
+      </LoginContext.Consumer>
         <h1 className="/title">
           환영
         </h1>
@@ -71,10 +77,11 @@ export default function Home({data}) {
         {loggedIn && <button onClick={logout}>firebase로그아웃</button  >}
 
       </main>
-
+      
       <footer>
         footer
       </footer>
+      
 
       <style jsx>{`
         .container {
