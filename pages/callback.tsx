@@ -1,3 +1,4 @@
+
 import Head from 'next/head';
 import {useContext} from 'react';
 import {LoginContext} from '../public/context';

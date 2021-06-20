@@ -1,79 +1,49 @@
 import Head from "next/head";
 import Link from "next/link";
-import firebase from "../lib/firebase";
+import { Grid } from "semantic-ui-react";
+import styles from "../src/postList.module.css";
+const cookie = require("cookie");
 
-import {parseCookies} from "./helpers/"
-import {useState, useEffect} from "react";
-import Cookies from 'js-cookie';
-import {LoginContext} from '../public/context';
-
-export default function Home() {
- //console.log(data);
-
-  
-  const [loggedIn, setLogin] = useState(false);
-  useEffect(() => {
-    const loggedInUser = Cookies.get('user');
-    if (loggedInUser) {
-      setLogin(true);
-    }
-  }, []);
-
-  const provider = new firebase.auth.GoogleAuthProvider();
-  let login = () => {
-    firebase.auth().signInWithPopup(provider)
-    .then(res => {
-      Cookies.set('user',JSON.stringify(res.user.uid));
-      setLogin(true);
-      // store.user = {
-      //   displayName: res.user.displayName,
-      //   email: res.user.email,
-      //   uid: res.user.uid,
-      // }
-    })
-    .catch(error => {
-      alert('login failed ' + error.message);
-      console.log(error);
-    }); 
-  }
-
-  let logout = () => {
-    firebase.auth().signOut().then(() => {
-    Cookies.remove('user');
-    setLogin(false);
-    }).catch(error => {
-      console.log(error);
-    })
-  };
+export default function Home({ posts }) {
   return (
-    
     <div className="container">
       <Head>
-        <title>블로그</title>
+        <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main>
-      <LoginContext.Consumer>
-        {({id, setID}) => (
-          //로그인 상태에 따라 뭔가 하기
-        )}
-      </LoginContext.Consumer>
-        <h1 className="/title">환영합니다</h1>
-        {/* <Link href="/postList">
-          <a>게시판</a>
-        </Link>
+        <h1 className="title">내 글</h1>
 
-        <Link href="/myPosts">{loggedIn ? <a> 내 글</a> : <span></span>}</Link>
-
-        <div>검색창</div>
-
-        <Link href="/signIn">
-          <button>로그인</button>
-        </Link>
-
-        {!loggedIn && <button onClick={login}>firebase로그인</button>}
-        {loggedIn && <div>안녕하세요</div>}
-        {loggedIn && <button onClick={logout}>firebase로그아웃</button>}
+        <section>
+          <Grid columns={3}>
+            <Grid.Row>
+              {posts &&
+                posts.map((item) => (
+                  <Grid.Column key={item.postID}>
+                    <Link href={`/posts/${item.postID}`}>
+                      <a>
+                        <div className={styles.wrap}>
+                          <h2 className={styles.tit_item}>{item.title}</h2>
+                          <span className={styles.txt_info}>
+                            <p>
+                              게시일:{" "}
+                              {new Date(
+                                item.created_at.seconds * 1000
+                              ).toISOString()}
+                            </p>
+                            <p>작성자: {item.author.displayName}</p>
+                            <p>카테고리: {item.category}</p>
+                          </span>
+                          <br />
+                        </div>
+                      </a>
+                    </Link>
+                  </Grid.Column>
+                ))}
+            </Grid.Row>
+          </Grid>
+        </section>
       </main>
 
       <style jsx>{`
@@ -220,8 +190,33 @@ export default function Home() {
         * {
           box-sizing: border-box;
         }
-      `}</style> */}
-      </main>
+      `}</style>
     </div>
   );
+}
+
+// export async function getStaticProps() {
+//   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
+//   const posts = await res.json();
+
+//   return {
+//     props: {posts},
+//   };
+// }
+
+export async function getServerSideProps(ctx) {
+  const { req, res } = ctx;
+  const cookies = cookie.parse(req.headers.cookie ?? "");
+  const uid = JSON.parse(cookies.user).uid;
+  //console.log(JSON.parse(cookies.user).uid);
+  const response = await fetch("http://localhost:3000/api/myPosts", {
+    headers: {
+      cookie: uid,
+    },
+  }); // must be changed by production
+  const posts = await response.json();
+
+  return {
+    props: { posts },
+  };
 }
