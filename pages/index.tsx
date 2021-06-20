@@ -1,25 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import firebase from "../lib/firebase";
-import store from "../lib/store";
+
+import { parseCookies } from "./helpers/";
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 export default function Home() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  let login = () => {
-    firebase.auth().signInWithPopup(provider)
-    .then(res => {
-      store.user = {
-        displayName: res.user.displayName,
-        email: res.user.email,
-        uid: res.user.uid,
-      }
-    })
-    .catch(error => {
-      alert('login failed ' + error.message);
-      console.log(error);
-    }); 
-  }
-  
   return (
     <div className="container">
       <Head>
@@ -28,26 +15,23 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1 className="/title">
-          환영
-        </h1>
-        <Link href='/postList'>
+        <h1 className="/title">환영합니다</h1>
+        {/* <Link href="/postList">
           <a>게시판</a>
         </Link>
-        
+
+        <Link href="/myPosts">{loggedIn ? <a> 내 글</a> : <span></span>}</Link>
+
         <div>검색창</div>
 
-        <Link href='/signIn'>
+        <Link href="/signIn">
           <button>로그인</button>
         </Link>
-        
-        {store.user === null && <button onClick={login}>firebase로그인</button  >}
-        {store.user !== null && <div>{store.user.displayName}</div>}
-      </main>
 
-      <footer>
-        footer
-      </footer>
+        {!loggedIn && <button onClick={login}>firebase로그인</button>}
+        {loggedIn && <div>안녕하세요</div>}
+        {loggedIn && <button onClick={logout}>firebase로그아웃</button>}
+      </main>
 
       <style jsx>{`
         .container {
@@ -193,7 +177,8 @@ export default function Home() {
         * {
           box-sizing: border-box;
         }
-      `}</style>
+      `}</style> */}
+      </main>
     </div>
   );
 }

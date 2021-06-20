@@ -5,7 +5,7 @@ const config = {
   storageBucket: "miniblog-33de9.appspot.com",
   messagingSenderId: "732119266218",
   appId: "1:732119266218:web:17b5699183abf1b4d271d3",
-  measurementId: "G-X1VMB0MEEH"
+  measurementId: "G-X1VMB0MEEH",
 };
 
 export default config;

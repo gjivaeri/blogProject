@@ -1,19 +1,22 @@
 import firebase from "../../lib/firebase";
 import config from "../../config/firebaseConfig";
+import Cookies from "js-cookie";
 
-const handler = async (any, res) => {
+const handler = async (req, res) => {
   try {
     firebase.app();
   } catch (error) {
     firebase.initializeApp(config);
     firebase.analytics();
   }
+
   try {
+    //console.log("body", req.headers.cookie);
     let posts = [];
     const snapshot = await firebase
       .firestore()
       .collection("posts")
-      .orderBy("created_at", "desc")
+      .where(`author.uid`, "==", req.headers.cookie)
       .get()
       .then((result) => {
         result.docs.forEach((doc) => {

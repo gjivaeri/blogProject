@@ -2,10 +2,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { Grid } from "semantic-ui-react";
 import styles from "../src/postList.module.css";
+const cookie = require("cookie");
 
 export default function Home({ posts }) {
-  //console.log(posts);
-
   return (
     <div className="container">
       <Head>
@@ -14,7 +13,7 @@ export default function Home({ posts }) {
       </Head>
 
       <main>
-        <h1 className="title">게시판</h1>
+        <h1 className="title">내 글</h1>
 
         <section>
           <Grid columns={3}>
@@ -31,7 +30,7 @@ export default function Home({ posts }) {
                               게시일:{" "}
                               {new Date(
                                 item.created_at.seconds * 1000
-                              ).toLocaleString()}
+                              ).toISOString()}
                             </p>
                             <p>작성자: {item.author.displayName}</p>
                             <p>카테고리: {item.category}</p>
@@ -205,9 +204,17 @@ export default function Home({ posts }) {
 //   };
 // }
 
-export async function getServerSideProps() {
-  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
-  const posts = await res.json();
+export async function getServerSideProps(ctx) {
+  const { req, res } = ctx;
+  const cookies = cookie.parse(req.headers.cookie ?? "");
+  const uid = JSON.parse(cookies.user).uid;
+  //console.log(JSON.parse(cookies.user).uid);
+  const response = await fetch("http://localhost:3000/api/myPosts", {
+    headers: {
+      cookie: uid,
+    },
+  }); // must be changed by production
+  const posts = await response.json();
 
   return {
     props: { posts },
