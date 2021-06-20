@@ -8,7 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@gjivaeri/test-component": "^0.0.5",
+    "@gjivaeri/test-component": "^0.0.8",
     "@types/jquery": "^3.5.5",
     "@types/react-draft-wysiwyg": "^1.13.2",
     "axios": "^0.21.1",

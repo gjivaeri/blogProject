@@ -1530,10 +1530,10 @@
     "@babel/runtime" "^7.10.4"
     react-is "^16.6.3"
 
-"@gjivaeri/test-component@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@gjivaeri/test-component/-/test-component-0.0.5.tgz#6c1dc733ea00a7e0c8570ddbe397a437f0d739b6"
-  integrity sha512-Q9/EEAQFSWOu0W/xbmgMccMgJHKDXral1ZRYTCx7teUpEX156RmRs1B1xlTeTfOePW9UtrX9VUOdMokVGK2IAQ==
+"@gjivaeri/test-component@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@gjivaeri/test-component/-/test-component-0.0.8.tgz#125649d58f35dd6cfa2be23dc6ab8df4825fc4a7"
+  integrity sha512-SgdVuI9D+NDiU/+369unm+DBDFQzopFPrqgoiei8xXvaYUHcshb8PZG2E1PhLC3pLHrxLI2pWug/AEY+SYCqAA==
   dependencies:
     react "^17.0.2"
     react-dom "^17.0.2"

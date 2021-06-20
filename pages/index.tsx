@@ -6,8 +6,8 @@ import {parseCookies} from "./helpers/"
 import {useState, useEffect} from "react";
 import Cookies from 'js-cookie';
 import {LoginContext} from '../public/context';
-import TestComponent from "@gjivaeri/test-component";
-import "@gjivaeri/test-component/dist/TestCss.css";
+import "@gjivaeri/test-component/dist/Clock.css";
+import Clock from "@gjivaeri/test-component";
 
 export default function Home() {
  //console.log(data);
