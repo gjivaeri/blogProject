@@ -6,45 +6,7 @@ import { parseCookies } from "./helpers/";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
-export default function Home({ data }) {
-  //console.log(data);
-
-  const [loggedIn, setLogin] = useState(false);
-  useEffect(() => {
-    const loggedInUser = Cookies.get("user");
-    if (loggedInUser) {
-      setLogin(true);
-    }
-  }, []);
-
-  const provider = new firebase.auth.GoogleAuthProvider();
-  let login = () => {
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then((res) => {
-        Cookies.set("user", JSON.stringify(res.user));
-        setLogin(true);
-      })
-      .catch((error) => {
-        alert("login failed " + error.message);
-        console.log(error);
-      });
-  };
-
-  let logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        Cookies.remove("user");
-        setLogin(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
+export default function Home() {
   return (
     <div className="container">
       <Head>
@@ -53,8 +15,8 @@ export default function Home({ data }) {
       </Head>
 
       <main>
-        <h1 className="/title">환영</h1>
-        <Link href="/postList">
+        <h1 className="/title">환영합니다</h1>
+        {/* <Link href="/postList">
           <a>게시판</a>
         </Link>
 
@@ -215,15 +177,8 @@ export default function Home({ data }) {
         * {
           box-sizing: border-box;
         }
-      `}</style>
+      `}</style> */}
+      </main>
     </div>
   );
-}
-
-export async function getServerSideProps(ctx) {
-  const data = parseCookies(ctx.req);
-
-  return {
-    props: { data },
-  };
 }
