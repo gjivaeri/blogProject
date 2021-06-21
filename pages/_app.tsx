@@ -2,7 +2,7 @@ import { AppProps } from "next/app";
 import "semantic-ui-css/semantic.min.css";
 import Footer from "../src/Footer";
 import Top from "../src/Top";
-import {Provider} from '../public/context';
+import { Provider } from '../public/context';
 import ToHome from "../src/ToHome";
 export default function App({ Component, pageProps }: AppProps) {
   // Set the configuration for your app
@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Top />
           <ToHome />
           <Provider>
-          <Component {...pageProps} />;
+            <Component {...pageProps} />;
           </Provider>
           <Footer />
         </a>

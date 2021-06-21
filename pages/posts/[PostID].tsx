@@ -115,7 +115,10 @@ export default function Posts({ posts, data }) {
   const options = [
     { key: 1, text: "일기", value: "diary" },
     { key: 2, text: "리뷰", value: "review" },
-    { key: 3, text: "TIL", value: "til" },
+    { key: 3, text: "Tech", value: "tech" },
+    { key: 4, text: "TIL", value: "til" },
+    { key: 5, text: "스타일", value: "style" },
+    { key: 6, text: "영화", value: "cinema" },
   ];
 
   if (modifyClicked == false) {
@@ -135,29 +138,29 @@ export default function Posts({ posts, data }) {
           <div className="Content"></div>
         </section>
 
-        {JSON.parse(user).uid == posts[i].author.uid ? (
+        {user.uid == posts[i].author.uid ? (
           <Button primary onClick={modify}>
             수정
           </Button>
+        ) : (
+            <span></span>
+          )}
+
+        <Link href="/postList">
+          {user.uid == posts[i].author.uid ? (
+            <Button secondary onClick={remove}>
+              삭제
+            </Button>
           ) : (
               <span></span>
             )}
-
-          <Link href="/postList">
-            {user.uid == posts[i].author.uid ? (
-              <Button secondary onClick={remove}>
-                삭제
-            </Button>
-            ) : (
-                <span></span>
-              )}
-          </Link>
-        </div>
+        </Link>
+      </div>
     );
   } else {
     return (
       <>
-          <title>글 수정</title>
+        <title>글 수정</title>
         <h1>글 수정</h1>
         {/*<nav>
           <ul className="nav-container">

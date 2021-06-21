@@ -1,21 +1,31 @@
 import Head from "next/head";
 import Link from "next/link";
 import { Grid } from "semantic-ui-react";
-import styles from "../src/postList.module.css";
-const cookie = require("cookie");
-
+import styles from "../../src/postList.module.css";
+import { useRouter } from "next/router";
 
 export default function Home({ posts }) {
+  const router = useRouter();
+  const keywords = (router.query.keyword as string).split(" ");
+  console.log(keywords);
+  posts = posts.filter((post) => {
+    let result = true;
+    for (let i = 0; i < keywords.length; i++)
+      result = result && (post.title.includes(keywords[i]) || post.content.includes(keywords[i]));
+    return result;
+  })
+
+  console.log(posts);
+
   return (
     <div className="container">
       <Head>
-        <title>내 글</title>
+        <title>검색 결과</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 className="title">내 글</h1>
-
+      <main >
+        <h1 className="title">검색: {router.query.keyword}</h1>
         <section>
           <Grid columns={3}>
             <Grid.Row>
@@ -31,7 +41,7 @@ export default function Home({ posts }) {
                               게시일:{" "}
                               {new Date(
                                 item.created_at.seconds * 1000
-                              ).toISOString()}
+                              ).toLocaleString()}
                             </p>
                             <p>작성자: {item.author.displayName}</p>
                             <p>카테고리: {item.category}</p>
@@ -206,19 +216,8 @@ export default function Home({ posts }) {
 // }
 
 export async function getServerSideProps(ctx) {
-  const { req, res } = ctx;
-  const cookies = cookie.parse(req.headers.cookie);
-  let uid;
-  if (cookies.user == undefined) uid = JSON.parse(cookies.userNaver).uid;
-  else uid = JSON.parse(cookies.user).uid;
-
-  //console.log(JSON.parse(cookies.user).uid);
-  const response = await fetch("http://localhost:3000/api/myPosts", {
-    headers: {
-      cookie: uid,
-    },
-  }); // must be changed by production
-  const posts = await response.json();
+  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
+  const posts = await res.json();
 
   return {
     props: { posts },
