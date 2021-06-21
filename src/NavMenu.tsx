@@ -3,20 +3,29 @@ import { Button, Menu, Segment } from "semantic-ui-react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import firebase from "../lib/firebase";
+import { LoginContext } from '../public/context';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 export default function NavMenu() {
   const router = useRouter();
   let activeItem;
 
   const [loggedIn, setLogin] = useState(false);
+  const { id, setID } = useContext(LoginContext);
   useEffect(() => {
-    const loggedInUser = Cookies.get("user");
-    if (loggedInUser) {
+    const loggedInUserGoogle = Cookies.get("user");
+    if (loggedInUserGoogle) {
       setLogin(true);
     }
+    const loggedInUserNaver = Cookies.get("userNaver");
+    console.log(loggedInUserNaver);
+    if (loggedInUserNaver) {
+      setID(loggedInUserNaver.uid);
+    }
   }, []);
+
+  const loggedInTotal = (id != 'default') || loggedIn;
 
   const provider = new firebase.auth.GoogleAuthProvider();
   let login = () => {
@@ -44,6 +53,11 @@ export default function NavMenu() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  let naver_logout = () => {
+    setID('default');
+    Cookies.remove("userNaver");
   };
 
   if (router.pathname === "/") {
@@ -77,19 +91,22 @@ export default function NavMenu() {
         />
         <Menu.Item>
           <Link href="/postEdit">
-            {loggedIn ? <Button inverted content="글쓰기" /> : <span></span>}
+            {loggedInTotal ? <Button inverted content="글쓰기" /> : <span></span>}
           </Link>
         </Menu.Item>
         <Menu.Item>
           <Link href="/myPosts">
-            {loggedIn ? <Button inverted content="내글" /> : <span></span>}
+            {loggedInTotal ? <Button inverted content="내글" /> : <span></span>}
           </Link>
         </Menu.Item>
         <Menu.Item>
-          {!loggedIn && <Button inverted content="로그인" onClick={login} />}
+          {!loggedInTotal && <Button inverted content="구글 로그인" onClick={login} />}
         </Menu.Item>
         <Menu.Item>
-          {loggedIn && <Button inverted content="로그아웃" onClick={logout} />}
+          {!loggedInTotal && <Link href="/signIn"><Button inverted content="네이버 로그인" /></Link>}
+        </Menu.Item>
+        <Menu.Item>
+          {loggedInTotal && <Button inverted content="로그아웃" onClick={loggedIn ? logout : naver_logout} />}
         </Menu.Item>
       </Menu>
     </Segment>

@@ -26,7 +26,8 @@ export default function Posts({ posts, data }) {
   const categoryReference = useRef();
   const titleReference = useRef();
   const contentReference = useRef();
-  const user = Cookies.get("user");
+  let user = Cookies.get("user");
+  if (user == undefined) user = Cookies.get("userNaver");
 
   const router = useRouter();
 
@@ -135,8 +136,8 @@ export default function Posts({ posts, data }) {
             수정
           </Button>
         ) : (
-          <span></span>
-        )}
+            <span></span>
+          )}
 
         <Link href="/postList">
           {JSON.parse(user).uid == posts[i].author.uid ? (
@@ -144,8 +145,8 @@ export default function Posts({ posts, data }) {
               삭제
             </Button>
           ) : (
-            <span></span>
-          )}
+              <span></span>
+            )}
         </Link>
       </div>
     );
@@ -153,13 +154,13 @@ export default function Posts({ posts, data }) {
     return (
       <>
         <h1>글 작성/수정</h1>
-        <nav>
+        {/*<nav>
           <ul className="nav-container">
             <li className="nav-item">홈</li>
             <li className="nav-item">내 글</li>
             <li className="nav-item">로그아웃</li>
           </ul>
-        </nav>
+        </nav>*/}
         <form>
           <div className="category">
             <Dropdown

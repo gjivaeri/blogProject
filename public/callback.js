@@ -8,8 +8,6 @@ alert(login.oauthParams.access_token);
 login.get_naver_userprofile("naverSignInCallback()");
 
 // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
-//sql로 저장하도록 고쳐야 합니다
 function naverSignInCallback() {
-    //alert(login.getProfileData('id'));
-    //alert(login.getProfileData('nickname'));
+    console.log('login success');
 }

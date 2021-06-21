@@ -206,8 +206,12 @@ export default function Home({ posts }) {
 
 export async function getServerSideProps(ctx) {
   const { req, res } = ctx;
-  const cookies = cookie.parse(req.headers.cookie ?? "");
-  const uid = JSON.parse(cookies.user).uid;
+  console.log(req.headers.cookie);
+  const cookies = cookie.parse(req.headers.cookie);
+  let uid;
+  if (cookies.user == undefined) uid = JSON.parse(cookies.userNaver).uid;
+  else uid = JSON.parse(cookies.user).uid;
+
   //console.log(JSON.parse(cookies.user).uid);
   const response = await fetch("http://localhost:3000/api/myPosts", {
     headers: {
