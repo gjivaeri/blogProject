@@ -37,6 +37,6 @@ see [Wiki page](https://github.com/gjivaeri/blogProject/wiki)
 
 ### Installation
 1. Clone the repo
-git clone https://github.com/gjivaeri/blogProject.git
+```git clone https://github.com/gjivaeri/blogProject.git```
 2. Firebase API key is uploaded, so you don't need to set up database
 3. npm install to get all the necessary modules
