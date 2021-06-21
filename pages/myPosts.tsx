@@ -195,20 +195,10 @@ export default function Home({ posts }) {
   );
 }
 
-// export async function getStaticProps() {
-//   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
-//   const posts = await res.json();
-
-//   return {
-//     props: {posts},
-//   };
-// }
-
 export async function getServerSideProps(ctx) {
   const { req, res } = ctx;
   const cookies = cookie.parse(req.headers.cookie ?? "");
   const uid = JSON.parse(cookies.user).uid;
-  //console.log(JSON.parse(cookies.user).uid);
   const response = await fetch("http://localhost:3000/api/myPosts", {
     headers: {
       cookie: uid,

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { Input, Dropdown, Button } from "semantic-ui-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import Cookies from "js-cookie";
 import * as Showdown from "showdown";
 import ReactMde from "react-mde";
@@ -36,7 +36,7 @@ export default function postEdit() {
         ? 0
         : (titleReference.current as HTMLInputElement).value;
 
-    const content = value; //(contentReference.current as HTMLInputElement).value;
+    const content = value;
     const user = Cookies.get("user");
 
     if (title == 0) {

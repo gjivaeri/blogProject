@@ -1,6 +1,5 @@
 import firebase from "../../lib/firebase";
 import config from "../../config/firebaseConfig";
-import Cookies from "js-cookie";
 
 const handler = async (req, res) => {
   try {
@@ -11,7 +10,6 @@ const handler = async (req, res) => {
   }
 
   try {
-    //console.log("body", req.headers.cookie);
     let posts = [];
     const snapshot = await firebase
       .firestore()
@@ -27,7 +25,7 @@ const handler = async (req, res) => {
         alert("error: " + error.message);
         console.log(error);
       });
-    return res.json(posts);
+    res.status(200).json(posts);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
