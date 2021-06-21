@@ -1,0 +1,78 @@
+@font-face {
+    font-family: "JosefinSans";
+    font-style:normal;
+    font-weight: 100;
+    src: url("../src/fonts/JosefinSans-Thin.ttf");
+}
+@font-face {
+    font-family: "JosefinSans";
+    font-style:normal;
+    font-weight: 200;
+    src: url("../src/fonts/JosefinSans-ExtraLight.ttf");
+}
+@font-face {
+    font-family: "JosefinSans";
+    font-style:normal;
+    font-weight: 300;
+    src: url("../src/fonts/JosefinSans-Light.ttf");
+}
+@font-face {
+    font-family: "JosefinSans";
+    font-style:normal;
+    font-weight: 400;
+    src: url("../src/fonts/JosefinSans-Regular.ttf");
+}
+@font-face {
+    font-family: "JosefinSans";
+    font-style:normal;
+    font-weight: 500;
+    src: url("../src/fonts/JosefinSans-Medium.ttf");
+}
+@font-face {
+    font-family: "JosefinSans";
+    font-style:normal;
+    font-weight: 600;
+    src: url("../src/fonts/JosefinSans-SemiBold.ttf");
+}
+@font-face {
+    font-family: "JosefinSans";
+    font-style:normal;
+    font-weight: 700;
+    src: url("../src/fonts/JosefinSans-Bold.ttf");
+}
+@font-face {
+    font-family: "Lora";
+    font-style:italic;
+    font-weight: 400;
+    src: url("../src/fonts/Lora-Italic.ttf");
+}
+@font-face {
+    font-family: "Lora";
+    font-style:italic;
+    font-weight: 500;
+    src: url("../src/fonts/Lora-MediumItalic.ttf");
+}
+@font-face {
+    font-family: "Lora";
+    font-style:italic;
+    font-weight: 600;
+    src: url("../src/fonts/Lora-SemiBoldItalic.ttf");
+}
+@font-face {
+    font-family: "Lora";
+    font-style:italic;
+    font-weight: 700;
+    src: url("../src/fonts/Lora-BoldItalic.ttf");
+}
+@font-face {
+    font-family: "Varela Round";
+    font-style:normal;
+    font-weight: 400;
+    src: url("../src/fonts/VarelaRound-Regular.ttf");
+}
+@font-face {
+    font-family: "Varela";
+    font-style:normal;
+    font-weight: 400;
+    src: url("../src/fonts/Varela-Regular.ttf");
+}

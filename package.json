@@ -46,6 +46,7 @@
     "serverless-mysql": "^1.5.4",
     "short-uuid": "^4.2.0",
     "showdown": "^1.9.1",
+    "styled-components": "^5.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
