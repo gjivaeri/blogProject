@@ -3,7 +3,6 @@ import { Button, Menu, Segment } from "semantic-ui-react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import firebase from "../lib/firebase";
-import "./navmenu.module.css";
 
 import { useState, useEffect } from "react";
 
@@ -65,7 +64,7 @@ export default function NavMenu() {
 
   return (
     <Segment inverted>
-      <Menu inverted pointing secondary>
+      <Menu inverted pointing secondary widths='ten'>
         <Menu.Item
           name="home"
           active={activeItem === "home"}
@@ -76,24 +75,26 @@ export default function NavMenu() {
           active={activeItem === "postList"}
           onClick={goLink}
         />
-        <Menu.Item>
-          <Link href="/postEdit">
-            {loggedIn ? <Button inverted content="글쓰기" /> : <span></span>}
-          </Link>
+
+        {loggedIn ?
+          <Menu.Item>
+            <Link href="/postEdit"><Button inverted content="글쓰기" /></Link>
+          </Menu.Item> : <span></span>
+        }
+
+        {loggedIn ?
+          <Menu.Item>
+            <Link href="/myPosts"><Button inverted content="내글" /></Link>
+          </Menu.Item> : <span></span>
+        }
+
+        <Menu.Item position='right'>
+          {loggedIn ? <Button inverted content="로그아웃" onClick={logout} />
+            : <Button inverted content="로그인" onClick={login} />}
         </Menu.Item>
-        <Menu.Item>
-          <Link href="/myPosts">
-            {loggedIn ? <Button inverted content="내글" /> : <span></span>}
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
-          {!loggedIn && <Button inverted content="로그인" onClick={login} />}
-        </Menu.Item>
-        <Menu.Item>
-          {loggedIn && <Button inverted content="로그아웃" onClick={logout} />}
-        </Menu.Item>
+
       </Menu>
-    </Segment>
+    </Segment >
   );
 }
 
