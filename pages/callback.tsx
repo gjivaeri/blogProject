@@ -17,7 +17,6 @@ export default function callback() {
             </Head>
             <button onClick={() => {
                 setID(login.getProfileData('id'));
-                alert(login.getProfileData('name'));
                 let user = {
                     uid: login.getProfileData('id'),
                     displayName: login.getProfileData('name')
