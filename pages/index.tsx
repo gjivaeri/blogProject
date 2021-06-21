@@ -1,7 +1,7 @@
 import Head from "next/head";
 import firebase from "../lib/firebase";
 
-import { parseCookies } from "./helpers/";
+import { parseCookies } from "../helpers";
 import { useState, useEffect, useContext } from "react";
 import Cookies from "js-cookie";
 import { LoginContext } from "../public/context";
