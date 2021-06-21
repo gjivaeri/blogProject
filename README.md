@@ -18,8 +18,7 @@ You can post whatever you like for free
 | pages/signIn.tsx | naver login page |
 | pages/callback.tsx | callback page after naver login |
 | src/NavMenu.tsx | navigation bar that stays at the top of the page |
-
-
+| src/sidebar/Sidebar.jsx | sidebar showing categories, links to posts of that category|
 | config/firebaseConfig.js | firebase config including API key |
 | lib/firebase.js | firebase initialization |
 
