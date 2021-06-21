@@ -5,56 +5,51 @@ import styles from "../../src/postList.module.css";
 import { useRouter } from "next/router";
 
 export default function Home({ posts }) {
-  const router = useRouter();
-  const keywords = (router.query.keyword as string).split(" ");
-  posts = posts.filter((post) => {
-    let result = true;
-    for (let i = 0; i < keywords.length; i++)
-      result = result && (post.title.includes(keywords[i]) || post.content.includes(keywords[i]));
-    return result;
-  });
+    const router = useRouter();
+    const category = router.query.category;
+    posts = posts.filter((post) => { return post.category == category });
 
-  return (
-    <div className="container">
-      <Head>
-        <title>검색 결과</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    return (
+        <div className="container">
+            <Head>
+                <title>검색 결과</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
 
-      <main >
-        <h1 className="title">검색: {router.query.keyword}</h1>
-        <section>
-          <Grid columns={3}>
-            <Grid.Row>
-              {posts &&
-                posts.map((item) => (
-                  <Grid.Column key={item.postID}>
-                    <Link href={`/posts/${item.postID}`}>
-                      <a>
-                        <div className={styles.wrap}>
-                          <h2 className={styles.tit_item}>{item.title}</h2>
-                          <span className={styles.txt_info}>
-                            <p>
-                              게시일:{" "}
-                              {new Date(
-                                item.created_at.seconds * 1000
-                              ).toLocaleString()}
-                            </p>
-                            <p>작성자: {item.author.displayName}</p>
-                            <p>카테고리: {item.category}</p>
-                          </span>
-                          <br />
-                        </div>
-                      </a>
-                    </Link>
-                  </Grid.Column>
-                ))}
-            </Grid.Row>
-          </Grid>
-        </section>
-      </main>
+            <main >
+                <h1 className="title">검색: {router.query.keyword}</h1>
+                <section>
+                    <Grid columns={3}>
+                        <Grid.Row>
+                            {posts &&
+                                posts.map((item) => (
+                                    <Grid.Column key={item.postID}>
+                                        <Link href={`/posts/${item.postID}`}>
+                                            <a>
+                                                <div className={styles.wrap}>
+                                                    <h2 className={styles.tit_item}>{item.title}</h2>
+                                                    <span className={styles.txt_info}>
+                                                        <p>
+                                                            게시일:{" "}
+                                                            {new Date(
+                                                                item.created_at.seconds * 1000
+                                                            ).toLocaleString()}
+                                                        </p>
+                                                        <p>작성자: {item.author.displayName}</p>
+                                                        <p>카테고리: {item.category}</p>
+                                                    </span>
+                                                    <br />
+                                                </div>
+                                            </a>
+                                        </Link>
+                                    </Grid.Column>
+                                ))}
+                        </Grid.Row>
+                    </Grid>
+                </section>
+            </main>
 
-      <style jsx>{`
+            <style jsx>{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -185,7 +180,7 @@ export default function Home({ posts }) {
         }
       `}</style>
 
-      <style jsx global>{`
+            <style jsx global>{`
         html,
         body {
           padding: 0;
@@ -199,8 +194,8 @@ export default function Home({ posts }) {
           box-sizing: border-box;
         }
       `}</style>
-    </div>
-  );
+        </div>
+    );
 }
 
 // export async function getStaticProps() {
@@ -213,10 +208,10 @@ export default function Home({ posts }) {
 // }
 
 export async function getServerSideProps(ctx) {
-  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
-  const posts = await res.json();
+    const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
+    const posts = await res.json();
 
-  return {
-    props: { posts },
-  };
+    return {
+        props: { posts },
+    };
 }
