@@ -9,7 +9,8 @@ export default function Home({ posts }) {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
+        <title>게시판</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main >
