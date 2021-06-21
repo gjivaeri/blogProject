@@ -13,7 +13,7 @@ export default function signIn() {
       <Head>
         <script type="text/javascript" src="/naverLogin.js"></script>
         <script type="text/javascript" src="/jQuery.js"></script>
-        <title>블로그 로그인</title>
+        <title>블로그 네이버 로그인</title>
       </Head>
       <div id="naver_id_login"></div>
     </div>

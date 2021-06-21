@@ -4,6 +4,7 @@ import Link from "next/link";
 import { parseCookies } from "../helpers/";
 import Cookies from "js-cookie";
 import { Input, Dropdown, Button } from "semantic-ui-react";
+import Head from "next/head";
 const axios = require("axios");
 
 var markdown = require("markdown").markdown;
@@ -28,6 +29,8 @@ export default function Posts({ posts, data }) {
   const contentReference = useRef();
   let user = Cookies.get("user");
   if (user == undefined) user = Cookies.get("userNaver");
+  if (user == undefined) user = { uid: '', displayName: '' };
+  else user = JSON.parse(user);
 
   const router = useRouter();
 
@@ -116,44 +119,52 @@ export default function Posts({ posts, data }) {
 
   if (modifyClicked == false) {
     return (
-      <div className="detailBox">
-        <h1 className="title">{posts[i].title}</h1>
-        <section className="ContentBox">
-          <p>
-            게시일:{" "}
-            {new Date(posts[i].created_at.seconds * 1000).toLocaleString()}
-          </p>
-          <p>작성자: {posts[i].author.displayName}</p>
-          <p>카테고리: {posts[i].category}</p>
-          <br />
-          <p>{parse(markdown.toHTML(posts[i].content))}</p>
+      <>
+        <Head>
+          <title>{posts[i].title}</title>
+        </Head>
+        <div className="detailBox">
+          <h1 className="title">{posts[i].title}</h1>
+          <section className="ContentBox">
+            <p>
+              게시일:{" "}
+              {new Date(posts[i].created_at.seconds * 1000).toLocaleString()}
+            </p>
+            <p>작성자: {posts[i].author.displayName}</p>
+            <p>카테고리: {posts[i].category}</p>
+            <br />
+            <p>{parse(markdown.toHTML(posts[i].content))}</p>
 
-          <div className="Content"></div>
-        </section>
+            <div className="Content"></div>
+          </section>
 
-        {JSON.parse(user).uid == posts[i].author.uid ? (
-          <Button primary onClick={modify}>
-            수정
+          {user.uid == posts[i].author.uid ? (
+            <Button primary onClick={modify}>
+              수정
           </Button>
-        ) : (
-            <span></span>
-          )}
-
-        <Link href="/postList">
-          {JSON.parse(user).uid == posts[i].author.uid ? (
-            <Button secondary onClick={remove}>
-              삭제
-            </Button>
           ) : (
               <span></span>
             )}
-        </Link>
-      </div>
+
+          <Link href="/postList">
+            {user.uid == posts[i].author.uid ? (
+              <Button secondary onClick={remove}>
+                삭제
+            </Button>
+            ) : (
+                <span></span>
+              )}
+          </Link>
+        </div>
+      </>
     );
   } else {
     return (
       <>
-        <h1>글 작성/수정</h1>
+        <Head>
+          <title>글 수정</title>
+        </Head>
+        <h1>글 수정</h1>
         {/*<nav>
           <ul className="nav-container">
             <li className="nav-item">홈</li>
