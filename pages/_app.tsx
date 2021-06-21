@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Top />
           <ToHome />
           <Provider>
-            <Component {...pageProps} />;
+            <Component {...pageProps} />
           </Provider>
           <Footer />
         </a>
