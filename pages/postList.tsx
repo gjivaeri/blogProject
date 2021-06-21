@@ -213,6 +213,6 @@ export async function getServerSideProps() {
     };
   } catch (error) {
     console.log(error);
-    return {};
+    return { props: {} };
   }
 }
