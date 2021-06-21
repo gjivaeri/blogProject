@@ -59,6 +59,7 @@ export default function Home() {
       </Head>
       <main>
         <h1 className="/title">환영합니다</h1>
+
         {/* <Link href="/postList">
           <a>게시판</a>
         </Link>

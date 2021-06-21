@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import firebase from "../lib/firebase";
 import { LoginContext } from '../public/context';
+import styles from "../src/NavMenu.module.css";
 
 import { useState, useEffect, useContext } from "react";
 
@@ -113,5 +114,5 @@ export default function NavMenu() {
   );
 }
 
-//상단 메뉴바 구현 https://semantic-ui.com/
-//별도 상태값과 action등을 가지고 있다.
+    //상단 메뉴바 구현 https://semantic-ui.com/
+    //별도 상태값과 action등을 가지고 있다.
