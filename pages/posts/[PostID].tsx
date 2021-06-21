@@ -4,9 +4,8 @@ import Link from "next/link";
 import { parseCookies } from "../helpers/";
 import Cookies from "js-cookie";
 import { Input, Dropdown, Button } from "semantic-ui-react";
-import styles from "../../src/postdetail.module.css"
+import styles from "../../src/postdetail.module.css";
 const axios = require("axios");
-
 
 var markdown = require("markdown").markdown;
 import parse from "html-react-parser";
@@ -30,7 +29,7 @@ export default function Posts({ posts, data }) {
   const contentReference = useRef();
   let user = Cookies.get("user");
   if (user == undefined) user = Cookies.get("userNaver");
-  if (user == undefined) user = { uid: '', displayName: '' };
+  if (user == undefined) user = { uid: "", displayName: "" };
   else user = JSON.parse(user);
 
   const router = useRouter();
@@ -130,10 +129,14 @@ export default function Posts({ posts, data }) {
             게시일:{" "}
             {new Date(posts[i].created_at.seconds * 1000).toLocaleString()}
           </p>
-          <p className={styles.postCat}>작성자: {posts[i].author.displayName}</p>
+          <p className={styles.postCat}>
+            작성자: {posts[i].author.displayName}
+          </p>
           <p className={styles.postCat}>카테고리: {posts[i].category}</p>
           <br />
-          <p className={styles.postDesc}>{parse(markdown.toHTML(posts[i].content))}</p>
+          <p className={styles.postDesc}>
+            {parse(markdown.toHTML(posts[i].content))}
+          </p>
 
           <div className="Content"></div>
         </section>
@@ -143,8 +146,8 @@ export default function Posts({ posts, data }) {
             수정
           </Button>
         ) : (
-            <span></span>
-          )}
+          <span></span>
+        )}
 
         <Link href="/postList">
           {user.uid == posts[i].author.uid ? (
@@ -152,8 +155,8 @@ export default function Posts({ posts, data }) {
               삭제
             </Button>
           ) : (
-              <span></span>
-            )}
+            <span></span>
+          )}
         </Link>
       </div>
     );
@@ -219,11 +222,15 @@ export default function Posts({ posts, data }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
-  const posts = await res.json();
-  const data = parseCookies(ctx.req);
+  try {
+    const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
+    const posts = await res.json();
+    const data = parseCookies(ctx.req);
 
-  return {
-    props: { posts, data },
-  };
+    return {
+      props: { posts, data },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }

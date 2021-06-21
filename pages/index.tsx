@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import firebase from "../lib/firebase";
 
 import { parseCookies } from "./helpers/";
