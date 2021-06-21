@@ -16,7 +16,7 @@ const handler = async (req, res) => {
     author: {
       uid: user.uid, //store.user.uid,
       displayName: user.displayName, //store.user.displayName,
-      email: user.email, //store.user.email,
+      //email: user.email, //store.user.email,
     },
     created_at: now,
     updated_at: now,

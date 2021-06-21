@@ -37,7 +37,9 @@ export default function postEdit() {
         : (titleReference.current as HTMLInputElement).value;
 
     const content = value; //(contentReference.current as HTMLInputElement).value;
-    const user = Cookies.get("user");
+
+    let user = Cookies.get("user");
+    if (user == undefined) user = Cookies.get("userNaver");
 
     if (title == 0) {
       alert("최소 한글자 이상의 제목을 입력해야 합니다");
