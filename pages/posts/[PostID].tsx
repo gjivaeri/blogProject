@@ -4,7 +4,9 @@ import Link from "next/link";
 import { parseCookies } from "../helpers/";
 import Cookies from "js-cookie";
 import { Input, Dropdown, Button } from "semantic-ui-react";
+import styles from "../../src/postdetail.module.css"
 const axios = require("axios");
+
 
 var markdown = require("markdown").markdown;
 import parse from "html-react-parser";
@@ -26,7 +28,10 @@ export default function Posts({ posts, data }) {
   const categoryReference = useRef();
   const titleReference = useRef();
   const contentReference = useRef();
-  const user = Cookies.get("user");
+  let user = Cookies.get("user");
+  if (user == undefined) user = Cookies.get("userNaver");
+  if (user == undefined) user = { uid: '', displayName: '' };
+  else user = JSON.parse(user);
 
   const router = useRouter();
 
@@ -115,17 +120,17 @@ export default function Posts({ posts, data }) {
 
   if (modifyClicked == false) {
     return (
-      <div className="detailBox">
-        <h1 className="title">{posts[i].title}</h1>
-        <section className="ContentBox">
-          <p>
+      <div className={styles.post}>
+        <h1 className={styles.postTitle}>{posts[i].title}</h1>
+        <section className={styles.postInfo}>
+          <p className={styles.postDate}>
             게시일:{" "}
             {new Date(posts[i].created_at.seconds * 1000).toLocaleString()}
           </p>
-          <p>작성자: {posts[i].author.displayName}</p>
-          <p>카테고리: {posts[i].category}</p>
+          <p className={styles.postCat}>작성자: {posts[i].author.displayName}</p>
+          <p className={styles.postCat}>카테고리: {posts[i].category}</p>
           <br />
-          <p>{parse(markdown.toHTML(posts[i].content))}</p>
+          <p className={styles.postDesc}>{parse(markdown.toHTML(posts[i].content))}</p>
 
           <div className="Content"></div>
         </section>
@@ -134,32 +139,33 @@ export default function Posts({ posts, data }) {
           <Button primary onClick={modify}>
             수정
           </Button>
-        ) : (
-          <span></span>
-        )}
-
-        <Link href="/postList">
-          {JSON.parse(user).uid == posts[i].author.uid ? (
-            <Button secondary onClick={remove}>
-              삭제
-            </Button>
           ) : (
-            <span></span>
-          )}
-        </Link>
-      </div>
+              <span></span>
+            )}
+
+          <Link href="/postList">
+            {user.uid == posts[i].author.uid ? (
+              <Button secondary onClick={remove}>
+                삭제
+            </Button>
+            ) : (
+                <span></span>
+              )}
+          </Link>
+        </div>
     );
   } else {
     return (
       <>
-        <h1>글 작성/수정</h1>
-        <nav>
+          <title>글 수정</title>
+        <h1>글 수정</h1>
+        {/*<nav>
           <ul className="nav-container">
             <li className="nav-item">홈</li>
             <li className="nav-item">내 글</li>
             <li className="nav-item">로그아웃</li>
           </ul>
-        </nav>
+        </nav>*/}
         <form>
           <div className="category">
             <Dropdown
