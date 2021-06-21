@@ -3,20 +3,29 @@ import { Button, Menu, Segment } from "semantic-ui-react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import firebase from "../lib/firebase";
+import { LoginContext } from '../public/context';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 export default function NavMenu() {
   const router = useRouter();
   let activeItem;
 
   const [loggedIn, setLogin] = useState(false);
+  const { id, setID } = useContext(LoginContext);
   useEffect(() => {
-    const loggedInUser = Cookies.get("user");
-    if (loggedInUser) {
+    const loggedInUserGoogle = Cookies.get("user");
+    if (loggedInUserGoogle) {
       setLogin(true);
     }
+    const loggedInUserNaver = Cookies.get("userNaver");
+    console.log(loggedInUserNaver);
+    if (loggedInUserNaver) {
+      setID(loggedInUserNaver.uid);
+    }
   }, []);
+
+  const loggedInTotal = (id != 'default') || loggedIn;
 
   const provider = new firebase.auth.GoogleAuthProvider();
   let login = () => {
@@ -44,6 +53,11 @@ export default function NavMenu() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  let naver_logout = () => {
+    setID('default');
+    Cookies.remove("userNaver");
   };
 
   if (router.pathname === "/") {
@@ -76,21 +90,22 @@ export default function NavMenu() {
           onClick={goLink}
         />
 
-        {loggedIn ?
+        {loggedInTotal ?
           <Menu.Item>
             <Link href="/postEdit"><Button inverted content="글쓰기" /></Link>
           </Menu.Item> : <span></span>
         }
 
-        {loggedIn ?
+        {loggedInTotal ?
           <Menu.Item>
             <Link href="/myPosts"><Button inverted content="내글" /></Link>
           </Menu.Item> : <span></span>
         }
 
         <Menu.Item position='right'>
-          {loggedIn ? <Button inverted content="로그아웃" onClick={logout} />
-            : <Button inverted content="로그인" onClick={login} />}
+          {loggedInTotal ? <Button inverted content="로그아웃" onClick={loggedIn ? logout : naver_logout} />
+            : <span><Button inverted content="구글 로그인" onClick={login} />
+          <Link href="/signIn"><Button inverted content="네이버 로그인" /></Link></span>}
         </Menu.Item>
 
       </Menu>

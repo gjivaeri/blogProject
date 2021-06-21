@@ -1,6 +1,7 @@
 const axios = require("axios");
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import { Input, Dropdown, Button } from "semantic-ui-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -37,7 +38,9 @@ export default function postEdit() {
         : (titleReference.current as HTMLInputElement).value;
 
     const content = value; //(contentReference.current as HTMLInputElement).value;
-    const user = Cookies.get("user");
+
+    let user = Cookies.get("user");
+    if (user == undefined) user = Cookies.get("userNaver");
 
     if (title == 0) {
       alert("최소 한글자 이상의 제목을 입력해야 합니다");
@@ -77,7 +80,10 @@ export default function postEdit() {
 
   return (
     <>
-      <h1>글 작성/수정</h1>
+      <Head>
+        <title>글 작성</title>
+      </Head>
+      <h1>글 작성</h1>
 
       <form>
         <div className="category">
