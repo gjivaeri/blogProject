@@ -78,7 +78,7 @@ export default function NavMenu() {
 
   return (
     <Segment inverted>
-      <Menu inverted pointing secondary>
+      <Menu inverted pointing secondary widths='ten'>
         <Menu.Item
           name="home"
           active={activeItem === "home"}
@@ -89,27 +89,31 @@ export default function NavMenu() {
           active={activeItem === "postList"}
           onClick={goLink}
         />
-        <Menu.Item>
-          <Link href="/postEdit">
-            {loggedInTotal ? <Button inverted content="글쓰기" /> : <span></span>}
-          </Link>
+
+        {loggedInTotal ?
+          <Menu.Item>
+            <Link href="/postEdit"><Button inverted content="글쓰기" /></Link>
+          </Menu.Item> : <span></span>
+        }
+
+        {loggedInTotal ?
+          <Menu.Item>
+            <Link href="/myPosts"><Button inverted content="내글" /></Link>
+          </Menu.Item> : <span></span>
+        }
+
+        <Menu.Item position='right'>
+          {loggedInTotal ? <Button inverted content="로그아웃" onClick={loggedIn ? logout : naver_logout} />
+            : <Button inverted content="구글 로그인" onClick={login} />}
         </Menu.Item>
-        <Menu.Item>
-          <Link href="/myPosts">
-            {loggedInTotal ? <Button inverted content="내글" /> : <span></span>}
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
-          {!loggedInTotal && <Button inverted content="구글 로그인" onClick={login} />}
-        </Menu.Item>
-        <Menu.Item>
-          {!loggedInTotal && <Link href="/signIn"><Button inverted content="네이버 로그인" /></Link>}
-        </Menu.Item>
-        <Menu.Item>
-          {loggedInTotal && <Button inverted content="로그아웃" onClick={loggedIn ? logout : naver_logout} />}
-        </Menu.Item>
+
+        {loggedInTotal ?
+          <span></span> : <Menu.Item>
+            <Link href="/signIn"><Button inverted content="네이버 로그인" /></Link>
+          </Menu.Item>
+        }
       </Menu>
-    </Segment>
+    </Segment >
   );
 }
 

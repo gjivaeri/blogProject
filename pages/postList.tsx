@@ -13,9 +13,7 @@ export default function Home({ posts }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 className="title">게시판</h1>
-
+      <main >
         <section>
           <Grid columns={3}>
             <Grid.Row>
