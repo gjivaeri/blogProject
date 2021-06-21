@@ -2,19 +2,18 @@ import Head from "next/head";
 import Link from "next/link";
 import firebase from "../lib/firebase";
 
-import { parseCookies } from "./helpers/"
+import { parseCookies } from "./helpers/";
 import { useState, useEffect, useContext } from "react";
-import Cookies from 'js-cookie';
-import { LoginContext } from '../public/context';
+import Cookies from "js-cookie";
+import { LoginContext } from "../public/context";
 
 export default function Home() {
   //console.log(data);
 
-
   const [loggedIn, setLogin] = useState(false);
   const { id, setID } = useContext(LoginContext);
   useEffect(() => {
-    const loggedInUserGoogle = Cookies.get('user');
+    const loggedInUserGoogle = Cookies.get("user");
     if (loggedInUserGoogle) {
       setLogin(true);
     }
@@ -26,9 +25,11 @@ export default function Home() {
 
   const provider = new firebase.auth.GoogleAuthProvider();
   let login = () => {
-    firebase.auth().signInWithPopup(provider)
-      .then(res => {
-        Cookies.set('user', JSON.stringify(res.user.uid));
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((res) => {
+        Cookies.set("user", JSON.stringify(res.user.uid));
         setLogin(true);
         // store.user = {
         //   displayName: res.user.displayName,
@@ -36,22 +37,25 @@ export default function Home() {
         //   uid: res.user.uid,
         // }
       })
-      .catch(error => {
-        alert('login failed ' + error.message);
+      .catch((error) => {
+        alert("login failed " + error.message);
         console.log(error);
       });
-  }
+  };
 
   let logout = () => {
-    firebase.auth().signOut().then(() => {
-      Cookies.remove('user');
-      setLogin(false);
-    }).catch(error => {
-      console.log(error);
-    })
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        Cookies.remove("user");
+        setLogin(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
-
     <div className="container">
       <Head>
         <title>블로그</title>
@@ -75,7 +79,6 @@ export default function Home() {
         {loggedIn && <div>안녕하세요</div>}
         {loggedIn && <button onClick={logout}>firebase로그아웃</button>}
       </main> */}
-
       </main>
       <style jsx>{`
         .container {
@@ -200,7 +203,7 @@ export default function Home() {
         * {
           box-sizing: border-box;
         }
-      `}</style> */}
+      `}</style>
     </div>
-  )
+  );
 }
