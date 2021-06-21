@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 import { Input, Dropdown, Button } from "semantic-ui-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import Cookies from "js-cookie";
 import * as Showdown from "showdown";
 import ReactMde from "react-mde";

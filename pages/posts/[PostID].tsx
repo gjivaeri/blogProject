@@ -216,11 +216,15 @@ export default function Posts({ posts, data }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
-  const posts = await res.json();
-  const data = parseCookies(ctx.req);
+  try {
+    const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
+    const posts = await res.json();
+    const data = parseCookies(ctx.req);
 
-  return {
-    props: { posts, data },
-  };
+    return {
+      props: { posts, data },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }

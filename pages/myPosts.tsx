@@ -4,7 +4,6 @@ import { Grid } from "semantic-ui-react";
 import styles from "../src/postList.module.css";
 const cookie = require("cookie");
 
-
 export default function Home({ posts }) {
   return (
     <div className="container">
@@ -196,32 +195,28 @@ export default function Home({ posts }) {
   );
 }
 
-// export async function getStaticProps() {
-//   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
-//   const posts = await res.json();
-
-//   return {
-//     props: {posts},
-//   };
-// }
-
 export async function getServerSideProps(ctx) {
-  const { req, res } = ctx;
-  console.log(req.headers.cookie);
-  const cookies = cookie.parse(req.headers.cookie);
-  let uid;
-  if (cookies.user == undefined) uid = JSON.parse(cookies.userNaver).uid;
-  else uid = JSON.parse(cookies.user).uid;
+  try {
+    const { req, res } = ctx;
+    console.log(req.headers.cookie);
+    const cookies = cookie.parse(req.headers.cookie);
+    let uid;
+    if (cookies.user == undefined) uid = JSON.parse(cookies.userNaver).uid;
+    else uid = JSON.parse(cookies.user).uid;
 
-  //console.log(JSON.parse(cookies.user).uid);
-  const response = await fetch("http://localhost:3000/api/myPosts", {
-    headers: {
-      cookie: uid,
-    },
-  }); // must be changed by production
-  const posts = await response.json();
+    //console.log(JSON.parse(cookies.user).uid);
+    const response = await fetch("http://localhost:3000/api/myPosts", {
+      headers: {
+        cookie: uid,
+      },
+    }); // must be changed by production
+    const posts = await response.json();
 
-  return {
-    props: { posts },
-  };
+    return {
+      props: { posts },
+    };
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
 }

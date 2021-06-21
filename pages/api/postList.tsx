@@ -24,7 +24,7 @@ const handler = async (any, res) => {
         alert("error: " + error.message);
         console.log(error);
       });
-    return res.json(posts);
+    res.status(200).json(posts);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

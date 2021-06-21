@@ -1,5 +1,4 @@
 import firebase from "../../lib/firebase";
-import config from "../../config/firebaseConfig";
 
 const short = require("short-uuid");
 
@@ -35,7 +34,9 @@ const handler = async (req, res) => {
     .catch((error) => {
       alert("error: " + error.message);
       console.log(error);
+      res.status(500).json({});
     });
+  res.status(200).json({});
 };
 
 export default handler;
