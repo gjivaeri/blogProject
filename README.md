@@ -17,7 +17,7 @@ You can post whatever you like for free
 | pages/myPosts.tsx | listing your posts page |
 | pages/signIn.tsx | naver login page |
 | pages/callback.tsx | callback page after naver login |
-| pages/404.js | 
+| pages/404.js | error page, displayed if user attempts nonexistent link |
 | src/NavMenu.tsx | navigation bar that stays at the top of the page |
 | src/sidebar/Sidebar.jsx | sidebar showing categories, links to posts of that category|
 | config/firebaseConfig.js | firebase config including API key |
