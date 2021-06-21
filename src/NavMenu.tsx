@@ -3,6 +3,7 @@ import { Button, Menu, Segment } from "semantic-ui-react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import firebase from "../lib/firebase";
+import "./navmenu.module.css";
 
 import { useState, useEffect } from "react";
 
@@ -65,9 +66,6 @@ export default function NavMenu() {
   return (
     <Segment inverted>
       <Menu inverted pointing secondary>
-        <Menu.Item
-          name="MyBlog"
-        />
         <Menu.Item
           name="home"
           active={activeItem === "home"}

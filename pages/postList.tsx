@@ -14,8 +14,6 @@ export default function Home({ posts }) {
       </Head>
 
       <main>
-        <h1 className="title">게시판</h1>
-
         <section>
           <Grid columns={3}>
             <Grid.Row>

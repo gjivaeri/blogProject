@@ -4,6 +4,7 @@ import { Grid } from "semantic-ui-react";
 import styles from "../src/postList.module.css";
 const cookie = require("cookie");
 
+
 export default function Home({ posts }) {
   return (
     <div className="container">

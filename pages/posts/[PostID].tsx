@@ -4,7 +4,9 @@ import Link from "next/link";
 import { parseCookies } from "../helpers/";
 import Cookies from "js-cookie";
 import { Input, Dropdown, Button } from "semantic-ui-react";
+import styles from "../../src/postdetail.module.css"
 const axios = require("axios");
+
 
 var markdown = require("markdown").markdown;
 import parse from "html-react-parser";
@@ -115,17 +117,17 @@ export default function Posts({ posts, data }) {
 
   if (modifyClicked == false) {
     return (
-      <div className="detailBox">
-        <h1 className="title">{posts[i].title}</h1>
-        <section className="ContentBox">
-          <p>
+      <div className={styles.post}>
+        <h1 className={styles.postTitle}>{posts[i].title}</h1>
+        <section className={styles.postInfo}>
+          <p className={styles.postDate}>
             게시일:{" "}
             {new Date(posts[i].created_at.seconds * 1000).toLocaleString()}
           </p>
-          <p>작성자: {posts[i].author.displayName}</p>
-          <p>카테고리: {posts[i].category}</p>
+          <p className={styles.postCat}>작성자: {posts[i].author.displayName}</p>
+          <p className={styles.postCat}>카테고리: {posts[i].category}</p>
           <br />
-          <p>{parse(markdown.toHTML(posts[i].content))}</p>
+          <p className={styles.postDesc}>{parse(markdown.toHTML(posts[i].content))}</p>
 
           <div className="Content"></div>
         </section>
