@@ -2,17 +2,16 @@ import Head from "next/head";
 import Link from "next/link";
 import firebase from "../lib/firebase";
 
-import {parseCookies} from "./helpers/"
+import {parseCookies} from "./helpers"
 import {useState, useEffect} from "react";
 import Cookies from 'js-cookie';
 import {LoginContext} from '../public/context';
 import "@gjivaeri/test-component/dist/Clock.css";
-import Clock from "@gjivaeri/test-component";
+
+
 
 export default function Home() {
  //console.log(data);
-
-  
   const [loggedIn, setLogin] = useState(false);
   useEffect(() => {
     const loggedInUser = Cookies.get('user');
@@ -47,73 +46,47 @@ export default function Home() {
       console.log(error);
     })
   };
+
   return (
-    
     <div className="container">
       <Head>
         <title>블로그</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-      {/* <LoginContext.Consumer>
-        {({id, setID}) => (
-          //로그인 상태에 따라 뭔가 하기
-        )}
-      </LoginContext.Consumer> */}
-        <h1 className="/title">환영합니다</h1>
-        {/* <Link href="/postList">
-          <a>게시판</a>
-        </Link>
-
-        <Link href="/myPosts">{loggedIn ? <a> 내 글</a> : <span></span>}</Link>
-
-        <div>검색창</div>
-
-        <Link href="/signIn">
-          <button>로그인</button>
-        </Link>
-
-        {!loggedIn && <button onClick={login}>firebase로그인</button>}
-        {loggedIn && <div>안녕하세요</div>}
-        {loggedIn && <button onClick={logout}>firebase로그아웃</button>}
-      </main>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
+      <div className="person1">
+        <img src="https://previews.123rf.com/images/vrabelpeter1/vrabelpeter11201/vrabelpeter1120100286/12079396-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD-%EB%90%9C-%EB%8F%99%EA%B7%B8%EB%9E%80-%EC%98%A4%EB%A0%8C%EC%A7%80-%EC%8A%AC%EB%9D%BC%EC%9D%B4%EC%8A%A4.jpg"></img>
+        <div>박설진</div>
+        <a href="https://github.com/gjivaeri/blogProject">깃허브 링크</a>
+      </div>
+      <div className="person1">
+        <img src="https://previews.123rf.com/images/vrabelpeter1/vrabelpeter11201/vrabelpeter1120100286/12079396-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD-%EB%90%9C-%EB%8F%99%EA%B7%B8%EB%9E%80-%EC%98%A4%EB%A0%8C%EC%A7%80-%EC%8A%AC%EB%9D%BC%EC%9D%B4%EC%8A%A4.jpg"></img>
+        <div>박설진</div>
+        <a href="https://github.com/gjivaeri/blogProject">깃허브 링크</a>
+      </div>
+      <div className="person1">
+        <img src="https://previews.123rf.com/images/vrabelpeter1/vrabelpeter11201/vrabelpeter1120100286/12079396-%ED%9D%B0%EC%83%89-%EB%B0%B0%EA%B2%BD%EC%97%90-%EA%B3%A0%EB%A6%BD-%EB%90%9C-%EB%8F%99%EA%B7%B8%EB%9E%80-%EC%98%A4%EB%A0%8C%EC%A7%80-%EC%8A%AC%EB%9D%BC%EC%9D%B4%EC%8A%A4.jpg"></img>
+        <div>박설진</div>
+        <a href="https://github.com/gjivaeri/blogProject">깃허브 링크</a>
+      </div>
+        <style jsx>{`
+          .container {
           padding: 0 0.5rem;
-          display: flex;
+          display: absolute;
           flex-direction: column;
           justify-content: center;
           align-items: center;
-        }
+          height: 800px;
+          color: red;
 
+        }
+        .person1 > img {
+          margin-top: 30px;
+          height:50px;
+          width:50px;
+        }
         main {
-          padding: 5rem 0;
-          flex: 1;
           display: flex;
           flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
         }
 
         a {
@@ -142,87 +115,13 @@ export default function Home() {
         .description {
           text-align: center;
         }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
       `}</style>
 
       <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
         * {
           box-sizing: border-box;
         }
-      `}</style> */}
+      `}</style>
       </main>
     </div>
   );

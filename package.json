@@ -14,6 +14,7 @@
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "bootstrap": "^5.0.1",
+    "components": "^0.1.0",
     "dotenv": "^10.0.0",
     "draft-convert": "^2.1.11",
     "draft-js": "^0.11.7",
@@ -23,6 +24,7 @@
     "firebase-tools": "^9.13.0",
     "gray-matter": "^4.0.3",
     "html-react-parser": "^1.2.7",
+    "jest-worker": "^27.0.2",
     "js-cookie": "^2.2.1",
     "markdown": "^0.5.0",
     "markdown-it": "^12.0.6",
@@ -48,11 +50,14 @@
     "serverless-mysql": "^1.5.4",
     "short-uuid": "^4.2.0",
     "showdown": "^1.9.1",
+    "styled": "^1.0.0",
+    "styled-components": "^5.3.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^15.6.1",
     "@types/react": "^17.0.9",
+    "babel-plugin-styled-components": "^1.12.0",
     "typescript": "^4.3.2"
   },
   "main": "index.js",

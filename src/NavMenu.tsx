@@ -66,6 +66,9 @@ export default function NavMenu() {
     <Segment inverted>
       <Menu inverted pointing secondary>
         <Menu.Item
+          name="MyBlog"
+        />
+        <Menu.Item
           name="home"
           active={activeItem === "home"}
           onClick={goLink}
