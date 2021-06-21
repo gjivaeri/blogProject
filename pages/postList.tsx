@@ -206,10 +206,14 @@ export default function Home({ posts }) {
 // }
 
 export async function getServerSideProps() {
-  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
-  const posts = await res.json();
+  try {
+    const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
+    const posts = await res.json();
 
-  return {
-    props: { posts },
-  };
+    return {
+      props: { posts },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }

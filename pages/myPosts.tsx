@@ -196,17 +196,21 @@ export default function Home({ posts }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const { req, res } = ctx;
-  const cookies = cookie.parse(req.headers.cookie ?? "");
-  const uid = JSON.parse(cookies.user).uid;
-  const response = await fetch("http://localhost:3000/api/myPosts", {
-    headers: {
-      cookie: uid,
-    },
-  }); // must be changed by production
-  const posts = await response.json();
+  try {
+    const { req, res } = ctx;
+    const cookies = cookie.parse(req.headers.cookie ?? "");
+    const uid = JSON.parse(cookies.user).uid;
+    const response = await fetch("http://localhost:3000/api/myPosts", {
+      headers: {
+        cookie: uid,
+      },
+    }); // must be changed by production
+    const posts = await response.json();
 
-  return {
-    props: { posts },
-  };
+    return {
+      props: { posts },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
