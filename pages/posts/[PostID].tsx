@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { parseCookies } from "../helpers/";
+import { parseCookies } from "../../helpers";
 import Cookies from "js-cookie";
 import { Input, Dropdown, Button } from "semantic-ui-react";
 import styles from "../../src/postdetail.module.css";
