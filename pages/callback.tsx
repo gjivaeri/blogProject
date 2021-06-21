@@ -13,7 +13,7 @@ export default function callback() {
                 <script type="text/javascript" src="/naverLogin.js"></script>
                 <script type="text/javascript" src="/jQuery.js"></script>
                 <script type="text/javascript" src="/callback.js"></script>
-                <title>블로그 로그인</title>
+                <title>블로그 네이버 로그인</title>
             </Head>
             <button onClick={() => {
                 setID(login.getProfileData('id'));
