@@ -104,10 +104,14 @@ export default function NavMenu() {
 
         <Menu.Item position='right'>
           {loggedInTotal ? <Button inverted content="로그아웃" onClick={loggedIn ? logout : naver_logout} />
-            : <span><Button inverted content="구글 로그인" onClick={login} />
-          <Link href="/signIn"><Button inverted content="네이버 로그인" /></Link></span>}
+            : <Button inverted content="구글 로그인" onClick={login} />}
         </Menu.Item>
 
+        {loggedInTotal ?
+          <span></span> : <Menu.Item>
+            <Link href="/signIn"><Button inverted content="네이버 로그인" /></Link>
+          </Menu.Item>
+        }
       </Menu>
     </Segment >
   );
