@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
-import { Button, Menu, Segment } from "semantic-ui-react";
+import { Button, Menu, Segment, Search } from "semantic-ui-react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import firebase from "../lib/firebase";
 import { LoginContext } from '../public/context';
+import styles from "../src/NavMenu.module.css";
 
 import { useState, useEffect, useContext } from "react";
 
@@ -74,6 +75,11 @@ export default function NavMenu() {
     }
   }
 
+  let search = () => {
+    var inputValue = (document.getElementById("search") as HTMLInputElement).value;
+    router.push(`/search/${inputValue}`);
+  };
+
   return (
     <Segment inverted>
       <Menu inverted pointing secondary widths='ten'>
@@ -100,6 +106,13 @@ export default function NavMenu() {
           </Menu.Item> : <span></span>
         }
 
+        <Menu.Item>
+          <div>
+            <input id="search" type="text" placeholder="Search..."></input>
+            <Button inverted content="검색" onClick={search} />
+          </div>
+        </Menu.Item>
+
         <Menu.Item position='right'>
           {loggedInTotal ? <Button inverted content="로그아웃" onClick={loggedIn ? logout : naver_logout} />
             : <Button inverted content="구글 로그인" onClick={login} />}
@@ -115,5 +128,5 @@ export default function NavMenu() {
   );
 }
 
-//상단 메뉴바 구현 https://semantic-ui.com/
-//별도 상태값과 action등을 가지고 있다.
+            //상단 메뉴바 구현 https://semantic-ui.com/
+            //별도 상태값과 action등을 가지고 있다.

@@ -1,85 +1,62 @@
 import Head from "next/head";
-import firebase from "../lib/firebase";
+import Link from "next/link";
+import { Grid } from "semantic-ui-react";
+import styles from "../../src/postList.module.css";
+import { useRouter } from "next/router";
 
-import { parseCookies } from "./helpers/";
-import { useState, useEffect, useContext } from "react";
-import Cookies from "js-cookie";
-import { LoginContext } from "../public/context";
+export default function Home({ posts }) {
+  const router = useRouter();
+  const keywords = (router.query.keyword as string).split(" ");
+  console.log(keywords);
+  posts = posts.filter((post) => {
+    let result = true;
+    for (let i = 0; i < keywords.length; i++)
+      result = result && (post.title.includes(keywords[i]) || post.content.includes(keywords[i]));
+    return result;
+  })
 
-export default function Home() {
-  //console.log(data);
+  console.log(posts);
 
-  const [loggedIn, setLogin] = useState(false);
-  const { id, setID } = useContext(LoginContext);
-  useEffect(() => {
-    const loggedInUserGoogle = Cookies.get("user");
-    if (loggedInUserGoogle) {
-      setLogin(true);
-    }
-    const loggedInUserNaver = Cookies.get("userNaver");
-    if (loggedInUserNaver) {
-      setID(loggedInUserNaver);
-    }
-  }, []);
-
-  const provider = new firebase.auth.GoogleAuthProvider();
-  let login = () => {
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then((res) => {
-        Cookies.set("user", JSON.stringify(res.user.uid));
-        setLogin(true);
-        // store.user = {
-        //   displayName: res.user.displayName,
-        //   email: res.user.email,
-        //   uid: res.user.uid,
-        // }
-      })
-      .catch((error) => {
-        alert("login failed " + error.message);
-        console.log(error);
-      });
-  };
-
-  let logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        Cookies.remove("user");
-        setLogin(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   return (
     <div className="container">
       <Head>
-        <title>블로그</title>
+        <title>검색 결과</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1 className="/title">환영합니다</h1>
 
-        {/* <Link href="/postList">
-          <a>게시판</a>
-        </Link>
-
-        <Link href="/myPosts">{loggedIn ? <a> 내 글</a> : <span></span>}</Link>
-
-        <div>검색창</div>
-
-        <Link href="/signIn">
-          <button>로그인</button>
-        </Link>
-
-        {!loggedIn && <button onClick={login}>firebase로그인</button>}
-        {loggedIn && <div>안녕하세요</div>}
-        {loggedIn && <button onClick={logout}>firebase로그아웃</button>}
-      </main> */}
+      <main >
+        <h1 className="title">검색: {router.query.keyword}</h1>
+        <section>
+          <Grid columns={3}>
+            <Grid.Row>
+              {posts &&
+                posts.map((item) => (
+                  <Grid.Column key={item.postID}>
+                    <Link href={`/posts/${item.postID}`}>
+                      <a>
+                        <div className={styles.wrap}>
+                          <h2 className={styles.tit_item}>{item.title}</h2>
+                          <span className={styles.txt_info}>
+                            <p>
+                              게시일:{" "}
+                              {new Date(
+                                item.created_at.seconds * 1000
+                              ).toLocaleString()}
+                            </p>
+                            <p>작성자: {item.author.displayName}</p>
+                            <p>카테고리: {item.category}</p>
+                          </span>
+                          <br />
+                        </div>
+                      </a>
+                    </Link>
+                  </Grid.Column>
+                ))}
+            </Grid.Row>
+          </Grid>
+        </section>
       </main>
+
       <style jsx>{`
         .container {
           min-height: 100vh;
@@ -89,6 +66,7 @@ export default function Home() {
           justify-content: center;
           align-items: center;
         }
+
         main {
           padding: 5rem 0;
           flex: 1;
@@ -97,6 +75,7 @@ export default function Home() {
           justify-content: center;
           align-items: center;
         }
+
         footer {
           width: 100%;
           height: 100px;
@@ -105,40 +84,49 @@ export default function Home() {
           justify-content: center;
           align-items: center;
         }
+
         footer img {
           margin-left: 0.5rem;
         }
+
         footer a {
           display: flex;
           justify-content: center;
           align-items: center;
         }
+
         a {
           color: inherit;
           text-decoration: none;
         }
+
         .title a {
           color: #0070f3;
           text-decoration: none;
         }
+
         .title a:hover,
         .title a:focus,
         .title a:active {
           text-decoration: underline;
         }
+
         .title {
           margin: 0;
           line-height: 1.15;
           font-size: 4rem;
         }
+
         .title,
         .description {
           text-align: center;
         }
+
         .description {
           line-height: 1.5;
           font-size: 1.5rem;
         }
+
         code {
           background: #fafafa;
           border-radius: 5px;
@@ -147,14 +135,17 @@ export default function Home() {
           font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
             DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
         }
+
         .grid {
           display: flex;
           align-items: center;
           justify-content: center;
           flex-wrap: wrap;
+
           max-width: 800px;
           margin-top: 3rem;
         }
+
         .card {
           margin: 1rem;
           flex-basis: 45%;
@@ -166,24 +157,29 @@ export default function Home() {
           border-radius: 10px;
           transition: color 0.15s ease, border-color 0.15s ease;
         }
+
         .card:hover,
         .card:focus,
         .card:active {
           color: #0070f3;
           border-color: #0070f3;
         }
+
         .card h3 {
           margin: 0 0 1rem 0;
           font-size: 1.5rem;
         }
+
         .card p {
           margin: 0;
           font-size: 1.25rem;
           line-height: 1.5;
         }
+
         .logo {
           height: 1em;
         }
+
         @media (max-width: 600px) {
           .grid {
             width: 100%;
@@ -191,6 +187,7 @@ export default function Home() {
           }
         }
       `}</style>
+
       <style jsx global>{`
         html,
         body {
@@ -200,10 +197,29 @@ export default function Home() {
             Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
             sans-serif;
         }
+
         * {
           box-sizing: border-box;
         }
       `}</style>
     </div>
   );
+}
+
+// export async function getStaticProps() {
+//   const res = await fetch('http://localhost:3000/api/postList'); // must be changed by production
+//   const posts = await res.json();
+
+//   return {
+//     props: {posts},
+//   };
+// }
+
+export async function getServerSideProps(ctx) {
+  const res = await fetch("http://localhost:3000/api/postList"); // must be changed by production
+  const posts = await res.json();
+
+  return {
+    props: { posts },
+  };
 }

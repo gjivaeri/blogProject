@@ -75,7 +75,10 @@ export default function postEdit() {
   const options = [
     { key: 1, text: "일기", value: "diary" },
     { key: 2, text: "리뷰", value: "review" },
-    { key: 3, text: "TIL", value: "til" },
+    { key: 3, text: "Tech", value: "tech" },
+    { key: 4, text: "TIL", value: "til" },
+    { key: 5, text: "스타일", value: "style" },
+    { key: 6, text: "영화", value: "cinema" },
   ];
 
   return (
